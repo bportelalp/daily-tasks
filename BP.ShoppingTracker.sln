@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User", "User", "{2A907675-9FF8-48BE-BF48-1B40127F346A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{236DB0F9-FD22-45FD-82E0-413E6CE5F290}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{12B92464-422F-4F5E-BF53-BC91FD02C055}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{072C3CD3-2F08-42DF-8D92-40FC05550D9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{F40FC948-5E20-4C27-AD6F-9CFE69FEDB67}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BP.ShoppingTracker.U40.Server.Controllers", "User\BP.ShoppingTracker.U40.Server.Controllers\BP.ShoppingTracker.U40.Server.Controllers.csproj", "{5853D245-8BAA-4791-8AF9-5DDD91EE90AA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EE.ShoppingTracker.U50.Client", "User\EE.ShoppingTracker.U50.Client\EE.ShoppingTracker.U50.Client.csproj", "{E6E40719-88EC-419F-9343-8A5F330BF527}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EE.ShoppingTracker.U50.Server", "User\EE.ShoppingTracker.U50.Server\EE.ShoppingTracker.U50.Server.csproj", "{60A720BF-798D-49A3-AB13-2FE76E6D1B21}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EE.ShoppingTracker.U50.Shared", "User\EE.ShoppingTracker.U50.Shared\EE.ShoppingTracker.U50.Shared.csproj", "{F2B86F9B-A12E-410E-8BEA-ED05CAAB7EBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BP.ShoppingTracker.I30.Persistence", "Infrastructure\BP.ShoppingTracker.I30.Persistence\BP.ShoppingTracker.I30.Persistence.csproj", "{6A07C00F-3EFD-49EE-8D96-E2F3F8B2E0B6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BP.ShoppingTracker.D10.Models", "Domain\BP.ShoppingTracker.D10.Models\BP.ShoppingTracker.D10.Models.csproj", "{51AD920F-E5F4-4B84-97F9-5DEEC44E6546}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BP.ShoppingTracker.D20.Adapters", "Domain\BP.ShoppingTracker.D20.Adapters\BP.ShoppingTracker.D20.Adapters.csproj", "{FB991EFA-FC4A-4F29-B962-2A51C289B348}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5853D245-8BAA-4791-8AF9-5DDD91EE90AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5853D245-8BAA-4791-8AF9-5DDD91EE90AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5853D245-8BAA-4791-8AF9-5DDD91EE90AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5853D245-8BAA-4791-8AF9-5DDD91EE90AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6E40719-88EC-419F-9343-8A5F330BF527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6E40719-88EC-419F-9343-8A5F330BF527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6E40719-88EC-419F-9343-8A5F330BF527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6E40719-88EC-419F-9343-8A5F330BF527}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60A720BF-798D-49A3-AB13-2FE76E6D1B21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60A720BF-798D-49A3-AB13-2FE76E6D1B21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60A720BF-798D-49A3-AB13-2FE76E6D1B21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60A720BF-798D-49A3-AB13-2FE76E6D1B21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2B86F9B-A12E-410E-8BEA-ED05CAAB7EBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2B86F9B-A12E-410E-8BEA-ED05CAAB7EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2B86F9B-A12E-410E-8BEA-ED05CAAB7EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2B86F9B-A12E-410E-8BEA-ED05CAAB7EBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A07C00F-3EFD-49EE-8D96-E2F3F8B2E0B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A07C00F-3EFD-49EE-8D96-E2F3F8B2E0B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A07C00F-3EFD-49EE-8D96-E2F3F8B2E0B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A07C00F-3EFD-49EE-8D96-E2F3F8B2E0B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51AD920F-E5F4-4B84-97F9-5DEEC44E6546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51AD920F-E5F4-4B84-97F9-5DEEC44E6546}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51AD920F-E5F4-4B84-97F9-5DEEC44E6546}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51AD920F-E5F4-4B84-97F9-5DEEC44E6546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB991EFA-FC4A-4F29-B962-2A51C289B348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB991EFA-FC4A-4F29-B962-2A51C289B348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB991EFA-FC4A-4F29-B962-2A51C289B348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB991EFA-FC4A-4F29-B962-2A51C289B348}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{072C3CD3-2F08-42DF-8D92-40FC05550D9E} = {2A907675-9FF8-48BE-BF48-1B40127F346A}
+		{F40FC948-5E20-4C27-AD6F-9CFE69FEDB67} = {2A907675-9FF8-48BE-BF48-1B40127F346A}
+		{5853D245-8BAA-4791-8AF9-5DDD91EE90AA} = {072C3CD3-2F08-42DF-8D92-40FC05550D9E}
+		{E6E40719-88EC-419F-9343-8A5F330BF527} = {F40FC948-5E20-4C27-AD6F-9CFE69FEDB67}
+		{60A720BF-798D-49A3-AB13-2FE76E6D1B21} = {072C3CD3-2F08-42DF-8D92-40FC05550D9E}
+		{F2B86F9B-A12E-410E-8BEA-ED05CAAB7EBD} = {2A907675-9FF8-48BE-BF48-1B40127F346A}
+		{6A07C00F-3EFD-49EE-8D96-E2F3F8B2E0B6} = {12B92464-422F-4F5E-BF53-BC91FD02C055}
+		{51AD920F-E5F4-4B84-97F9-5DEEC44E6546} = {236DB0F9-FD22-45FD-82E0-413E6CE5F290}
+		{FB991EFA-FC4A-4F29-B962-2A51C289B348} = {236DB0F9-FD22-45FD-82E0-413E6CE5F290}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73A74D63-D20E-4A28-8D73-720A3933E015}
+	EndGlobalSection
+EndGlobal
