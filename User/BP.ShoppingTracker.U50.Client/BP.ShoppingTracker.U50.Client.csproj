@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EE.ShoppingTracker.U50.Shared\EE.ShoppingTracker.U50.Shared.csproj" />
+    <ProjectReference Include="..\BP.ShoppingTracker.U50.Shared\BP.ShoppingTracker.U50.Shared.csproj" />
   </ItemGroup>
 
 </Project>

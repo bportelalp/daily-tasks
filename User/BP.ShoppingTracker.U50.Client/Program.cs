@@ -1,4 +1,4 @@
-using EE.ShoppingTracker.U50.Client;
+using BP.ShoppingTracker.U50.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

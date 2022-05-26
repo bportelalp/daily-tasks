@@ -1,4 +1,4 @@
-namespace EE.ShoppingTracker.U50.Shared
+namespace BP.ShoppingTracker.U50.Shared
 {
     public class WeatherForecast
     {

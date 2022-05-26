@@ -1,7 +1,7 @@
-using EE.ShoppingTracker.U50.Shared;
+using BP.ShoppingTracker.U50.Shared;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EE.ShoppingTracker.U50.Server.Controllers
+namespace BP.ShoppingTracker.U50.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
