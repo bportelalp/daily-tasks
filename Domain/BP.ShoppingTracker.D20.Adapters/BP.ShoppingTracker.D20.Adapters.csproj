@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BP.ShoppingTracker.D10.Models\BP.ShoppingTracker.D10.Models.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,112 @@
+{
+  "ProductTypesTree": [
+    {
+      "Name": "Macarrones",
+      "ProductCategory": "Pastas",
+      "Description": ""
+    },
+    {
+      "Name": "Espaguetis",
+      "ProductCategory": "Pastas"
+    },
+    {
+      "Name": "Espirales",
+      "ProductCategory": "Pastas"
+    },
+    {
+      "Name": "Atún",
+      "ProductCategory": "Conservas",
+      "ProductTypes": [
+        {
+          "Name": "Atún en aceite de oliva",
+          "ProductCategory": "Conservas"
+        },
+        {
+          "Name": "Atún en aceite de girasol",
+          "ProductCategory": "Conservas"
+        }
+      ]
+    },
+    {
+      "Name": "Bonito",
+      "ProductCategory": "Conservas",
+      "ProductTypes": [
+        {
+          "Name": "Bonito en aceite de oliva",
+          "ProductCategory": "Conservas"
+        },
+        {
+          "Name": "Bonito en aceite de girasol",
+          "ProductCategory": "Conservas"
+        }
+      ]
+    },
+    {
+      "Name": "Calamares",
+      "ProductCategory": "Conservas",
+      "ProductTypes": [
+        {
+          "Name": "Calamares en salsa americana",
+          "ProductCategory": "Conservas"
+        },
+        {
+          "Name": "Calamares en su tinta",
+          "ProductCategory": "Conservas"
+        }
+      ]
+    },
+    {
+      "Name": "Pan",
+      "ProductCategory": "Panadería"
+    },
+    {
+      "Name": "Pan de molde",
+      "ProductCategory": "Panadería",
+      "ProductTypes": [
+        {
+          "Name": "Pan de molde integral",
+          "ProductCategory": "Panadería"
+        },
+        {
+          "Name": "Pan de molde de semillas",
+          "ProductCategory": "Panadería"
+        }
+      ]
+    },
+    {
+      "Name": "Banana",
+      "ProductCategory": "Frutas"
+    }
+  ],
+  "MeasureTypes": [
+    {
+      "ID": 1,
+      "Name": "Gramo",
+      "Description": "Unidad de medida de masa",
+      "Unit": "g",
+      "ScaleFactorSI": 1000
+    },
+    {
+      "ID": 2,
+      "Name": "Mililitro",
+      "Description": "Unidad de medida de capacidad",
+      "Unit": "ml",
+      "ScaleFactorSI": 1000
+    },
+    {
+      "ID": 3,
+      "Name": "Unidad",
+      "Description": "Unidad",
+      "Unit": "Uds",
+      "ScaleFactorSI": 0
+    },
+    {
+      "ID": 4,
+      "Name": "Gramo",
+      "Description": "Unidad de medida de masa",
+      "Unit": "g",
+      "ScaleFactorSI": 1000
+    }
+
+  ]
+}
