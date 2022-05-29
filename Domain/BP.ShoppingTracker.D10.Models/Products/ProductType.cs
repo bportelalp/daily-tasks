@@ -13,9 +13,11 @@ namespace BP.ShoppingTracker.D10.Models.Products
 
         public ProductCategory ProductCategory { get; set; }
         public ProductType Parent { get; set; }
-        public List<ProductType> Children { get; set; }
+        public IEnumerable<ProductType> Children { get; set; }
         public bool HasParent => Parent is null;
         public bool HasProductCategory => ProductCategory is null;
         public bool HasChildren => Children is null || Children.Any();
+
+        public override string ToString() => Name + " - " + (ProductCategory==null? "":$"({ProductCategory?.Description}) - ") + Id; 
     }
 }

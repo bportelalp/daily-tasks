@@ -30,7 +30,13 @@ namespace BP.ShoppingTracker.D20.Adapters
 
         #region READ
         Task<IEnumerable<ProductCategory>> ReadProductCategories();
+        Task<ProductType> ReadProductType(Guid Id, bool IncludeParent = false, bool IncludeChildren = false);
         Task<IEnumerable<ProductType>> ReadProductTypes(bool includeCategory = true);
+        Task<IEnumerable<ProductType>> ReadProductTypes(string SearchName, bool IncludeCategory = true, bool ReturnHierarchy = false);
+        Task<IEnumerable<MeasureType>> ReadMeasureTypes();
+        Task<IEnumerable<FormatType>> ReadFormatTypes(string SearchName = "");
+        Task<Format> ReadFormat(Guid Id, bool IncludeParent = true);
+        Task<IEnumerable<Format>> ReadFormats();
         #endregion
 
         #region UPDATE

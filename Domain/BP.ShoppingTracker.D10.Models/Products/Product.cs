@@ -16,5 +16,7 @@ namespace BP.ShoppingTracker.D10.Models.Products
 
         public ProductType ProductType { get; set; }
 
+        public override string ToString()=> Name + " - " + Id;
+
     }
 }

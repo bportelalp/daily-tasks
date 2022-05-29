@@ -8,8 +8,9 @@ namespace BP.ShoppingTracker.D10.Models.Products
 {
     public class MeasureType : Base.EntityBase
     {
-        public int Id { get; set; }
+        public new int Id { get; set; }
         public string Unit { get; set; }
         public int ScaleFactorSI { get; set; }
+        public override string ToString() => Unit;
     }
 }

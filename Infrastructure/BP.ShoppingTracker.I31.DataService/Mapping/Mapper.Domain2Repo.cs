@@ -81,6 +81,7 @@ namespace BP.ShoppingTracker.I31.DataService.Mapping
                 Id = row.ID,
                 FormatTypeFK = row.FormatTypeFK,
                 MeasureTypeFK = row.MeasureTypeFK,
+                ParentFK = row.ParentFK,
                 Value = row.Value,
                 Active = row.Active
             };

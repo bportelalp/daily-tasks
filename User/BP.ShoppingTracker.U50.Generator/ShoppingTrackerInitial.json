@@ -99,14 +99,6 @@
       "Description": "Unidad",
       "Unit": "Uds",
       "ScaleFactorSI": 0
-    },
-    {
-      "ID": 4,
-      "Name": "Gramo",
-      "Description": "Unidad de medida de masa",
-      "Unit": "g",
-      "ScaleFactorSI": 1000
     }
-
   ]
 }

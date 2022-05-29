@@ -9,9 +9,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.3.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.D20.Adapters\BP.ShoppingTracker.D20.Adapters.csproj" />
+    <ProjectReference Include="..\BP.ShoppingTracker.IoC.Server\BP.ShoppingTracker.IoC.Server.csproj" />
+    <ProjectReference Include="..\BP.ShoppingTracker.U40.Server.Controllers\BP.ShoppingTracker.U40.Server.WebAPI.csproj" />
     <ProjectReference Include="..\BP.ShoppingTracker.U50.Client\BP.ShoppingTracker.U50.Client.csproj" />
     <ProjectReference Include="..\BP.ShoppingTracker.U50.Shared\BP.ShoppingTracker.U50.Shared.csproj" />
   </ItemGroup>

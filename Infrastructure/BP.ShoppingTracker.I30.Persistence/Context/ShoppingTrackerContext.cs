@@ -73,6 +73,11 @@ namespace BP.ShoppingTracker.I30.Persistence.Context
                     .HasForeignKey(d => d.MeasureTypeFK)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Format_MeasureType");
+
+                entity.HasOne(d => d.ParentFKNavigation)
+                    .WithMany(p => p.InverseParentFKNavigation)
+                    .HasForeignKey(d => d.ParentFK)
+                    .HasConstraintName("FK_Format_Format");
             });
 
             modelBuilder.Entity<FormatType>(entity =>
