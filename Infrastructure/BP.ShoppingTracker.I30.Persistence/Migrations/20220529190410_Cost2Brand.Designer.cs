@@ -4,6 +4,7 @@ using BP.ShoppingTracker.I30.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BP.ShoppingTracker.I30.Persistence.Migrations
 {
     [DbContext(typeof(ShoppingTrackerContext))]
-    partial class ShoppingTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20220529190410_Cost2Brand")]
+    partial class Cost2Brand
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,8 +102,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double?>("RateSale")
-                        .HasColumnType("float")
-                        .HasComment("En tanto por uno, porcentaje de descuento aplicado dando como resultado el valor de Value");
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("RegisteredOn")
                         .HasColumnType("datetime2");
@@ -115,6 +116,8 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("BrandFK");
 
                     b.HasIndex("ProductFK");
 
@@ -342,11 +345,19 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
 
             modelBuilder.Entity("BP.ShoppingTracker.I30.Persistence.Entities.CostEvolution", b =>
                 {
+                    b.HasOne("BP.ShoppingTracker.I30.Persistence.Entities.Brand", "BrandFKNavigation")
+                        .WithMany("CostEvolutions")
+                        .HasForeignKey("BrandFK")
+                        .IsRequired()
+                        .HasConstraintName("FK_CostEvolution_Brand");
+
                     b.HasOne("BP.ShoppingTracker.I30.Persistence.Entities.Product", "ProductFKNavigation")
                         .WithMany("CostEvolutions")
                         .HasForeignKey("ProductFK")
                         .IsRequired()
                         .HasConstraintName("FK_CostEvolution_Product");
+
+                    b.Navigation("BrandFKNavigation");
 
                     b.Navigation("ProductFKNavigation");
                 });
@@ -417,6 +428,8 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
 
             modelBuilder.Entity("BP.ShoppingTracker.I30.Persistence.Entities.Brand", b =>
                 {
+                    b.Navigation("CostEvolutions");
+
                     b.Navigation("Products");
                 });
 

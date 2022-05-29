@@ -4,6 +4,7 @@ using BP.ShoppingTracker.I30.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BP.ShoppingTracker.I30.Persistence.Migrations
 {
     [DbContext(typeof(ShoppingTrackerContext))]
-    partial class ShoppingTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20220529172358_CompositeKeyFormat")]
+    partial class CompositeKeyFormat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,23 +95,17 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                     b.Property<Guid>("ID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BrandFK")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProductFK")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double?>("RateSale")
-                        .HasColumnType("float")
-                        .HasComment("En tanto por uno, porcentaje de descuento aplicado dando como resultado el valor de Value");
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("RegisteredOn")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<bool>("SalePrice")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<double>("Value")
                         .HasColumnType("float");
@@ -137,6 +133,9 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
 
                     b.Property<int>("MeasureTypeFK")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("ParentFK")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Value")
                         .HasColumnType("int");

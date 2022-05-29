@@ -15,9 +15,11 @@ namespace BP.ShoppingTracker.I30.Persistence.Context
         public ShoppingTrackerContext(DbContextOptions<ShoppingTrackerContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public virtual DbSet<Brand> Brands { get; set; } = null!;
+        public virtual DbSet<CombinedFormat> CombinedFormats { get; set; } = null!;
         public virtual DbSet<Company> Companies { get; set; } = null!;
         public virtual DbSet<CostEvolution> CostEvolutions { get; set; } = null!;
         public virtual DbSet<Format> Formats { get; set; } = null!;
@@ -31,6 +33,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=webserver-vbox;Initial Catalog=ShoppingTracker;Persist Security Info=True;User ID=sa;Password=a123.456");
             }
         }
@@ -47,20 +50,57 @@ namespace BP.ShoppingTracker.I30.Persistence.Context
                     .HasConstraintName("FK_Brand_Company");
             });
 
+            modelBuilder.Entity<CombinedFormat>(entity =>
+            {
+
+                entity.HasComment("Permite la posibilidad de que un producto tenga formato derivado: (pack de 6 latas de 300g) => (pack de 6) -> (latas de 300g)");
+
+                entity.HasKey(e => new { e.MainFormatFK, e.DerivedFormatFK });
+
+                entity.Property(e => e.MainFormatFK).ValueGeneratedNever();
+                entity.Property(e => e.DerivedFormatFK).ValueGeneratedNever();
+
+                entity.Property(e => e.Active).HasDefaultValue(true);
+
+                entity.HasOne(d => d.DerivedFormatFKNavigation)
+                    .WithMany(p => p.CombinedFormatDerivedFormatFKNavigations)
+                    .HasForeignKey(d => d.DerivedFormatFK)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CombinedFormat_Format_Derived");
+
+                entity.HasOne(d => d.MainFormatFKNavigation)
+                    .WithMany(p => p.CombinedFormatMainFormatFKNavigations)
+                    .HasForeignKey(d => d.MainFormatFK)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CombinedFormat_Format_Main");
+            });
+
+            modelBuilder.Entity<Company>(entity =>
+            {
+                entity.Property(e => e.ID).ValueGeneratedNever();
+            });
+
             modelBuilder.Entity<CostEvolution>(entity =>
             {
                 entity.Property(e => e.ID).ValueGeneratedNever();
+
+                entity.Property(e => e.SalePrice).HasDefaultValue(false);
+
+                entity.Property(e => e.RateSale).HasComment("En tanto por uno, porcentaje de descuento aplicado dando como resultado el valor de Value");
 
                 entity.HasOne(d => d.ProductFKNavigation)
                     .WithMany(p => p.CostEvolutions)
                     .HasForeignKey(d => d.ProductFK)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CostEvolution_Product");
+
             });
 
             modelBuilder.Entity<Format>(entity =>
             {
-                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+                entity.Property(e => e.ID).ValueGeneratedNever();
+
+                entity.Property(e => e.Active).HasDefaultValue(true);
 
                 entity.HasOne(d => d.FormatTypeFKNavigation)
                     .WithMany(p => p.Formats)
@@ -73,31 +113,25 @@ namespace BP.ShoppingTracker.I30.Persistence.Context
                     .HasForeignKey(d => d.MeasureTypeFK)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Format_MeasureType");
-
-                entity.HasOne(d => d.ParentFKNavigation)
-                    .WithMany(p => p.InverseParentFKNavigation)
-                    .HasForeignKey(d => d.ParentFK)
-                    .HasConstraintName("FK_Format_Format");
             });
 
             modelBuilder.Entity<FormatType>(entity =>
             {
                 entity.Property(e => e.ID).ValueGeneratedNever();
 
-                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValue(true);
             });
 
             modelBuilder.Entity<MeasureType>(entity =>
             {
                 entity.Property(e => e.ID).ValueGeneratedNever();
-                entity.Property(e => e.Unit);
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.Property(e => e.ID).ValueGeneratedNever();
 
-                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValue(true);
 
                 entity.HasOne(d => d.BrandFKNavigation)
                     .WithMany(p => p.Products)
@@ -105,13 +139,13 @@ namespace BP.ShoppingTracker.I30.Persistence.Context
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Product_Brand");
 
-                entity.HasOne(d => d.ProductTypeFKNavigation)
+                entity.HasOne(d => d.FormatFKNavigation)
                     .WithMany(p => p.Products)
-                    .HasForeignKey(d => d.ProductTypeFK)
+                    .HasForeignKey(d => new { d.FormatFK1, d.FormatFK2 })
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Product_Format");
 
-                entity.HasOne(d => d.ProductTypeFK1)
+                entity.HasOne(d => d.ProductTypeFKNavigation)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.ProductTypeFK)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -120,18 +154,18 @@ namespace BP.ShoppingTracker.I30.Persistence.Context
 
             modelBuilder.Entity<ProductCategory>(entity =>
             {
-                entity.Property(e => e.ID).ValueGeneratedNever();
-
                 entity.HasComment("Categoría del tipo de producto: Alimentación, perfumería etc");
 
-                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+                entity.Property(e => e.ID).ValueGeneratedNever();
+
+                entity.Property(e => e.Active).HasDefaultValue(true);
             });
 
             modelBuilder.Entity<ProductType>(entity =>
             {
                 entity.Property(e => e.ID).ValueGeneratedNever();
 
-                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValue(true);
 
                 entity.HasOne(d => d.ParentFKNavigation)
                     .WithMany(p => p.InverseParentFKNavigation)

@@ -32,7 +32,7 @@ namespace BP.ShoppingTracker.I32.Generator
                 List<ProductType> newsProductTypes = new List<ProductType>();
                 List<ProductCategory> newsProductCategory = new List<ProductCategory>();
                 List<MeasureType> newsMeasureTypes = new List<MeasureType>();
-
+                
                 //Establecer categorías
                 foreach (var pt in config.ProductTypesTree)
                 {

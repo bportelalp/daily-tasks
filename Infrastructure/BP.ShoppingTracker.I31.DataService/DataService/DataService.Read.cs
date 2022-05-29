@@ -12,16 +12,16 @@ namespace BP.ShoppingTracker.I31.DataService
             return mapper.Repo2Domain(query);
         }
 
-        public async Task<ProductType> ReadProductType(Guid Id, bool IncludeParent = false, bool IncludeChildren = false)
+        public async Task<ProductType> ReadProductType(Guid id, bool includeParent = false, bool includeChildren = false)
         {
             var query = dbContext.ProductTypes.AsNoTracking();
-            if (IncludeParent)
+            if (includeParent)
                 query = query.Include(pt => pt.ParentFKNavigation);
-            if (IncludeChildren)
+            if (includeChildren)
                 query = query.Include(pt => pt.InverseParentFKNavigation);
             query = query.Include(pt => pt.ProductCategoryFKNavigation);
 
-            var result = await query.SingleOrDefaultAsync(pt => pt.ID == Id);
+            var result = await query.SingleOrDefaultAsync(pt => pt.ID == id);
             var returned = mapper.Repo2Domain(result);
             if (returned is not null)
             {
@@ -32,13 +32,13 @@ namespace BP.ShoppingTracker.I31.DataService
             return returned;
         }
         public async Task<IEnumerable<ProductType>> ReadProductTypes(bool includeCategory = true) => await this.ReadProductTypes(string.Empty, includeCategory);
-        public async Task<IEnumerable<ProductType>> ReadProductTypes(string SearchName, bool IncludeCategory = true, bool ReturnHierarchy = false)
+        public async Task<IEnumerable<ProductType>> ReadProductTypes(string searchName, bool includeCategory = true, bool returnHierarchy = false)
         {
             List<ProductType> result = new List<ProductType>();
             var query = dbContext.ProductTypes.AsNoTracking();
-            if (!string.IsNullOrWhiteSpace(SearchName))
-                query = query.Where(pt => SearchName.ToUpperInvariant().Contains(pt.Name.ToUpperInvariant()));
-            if (ReturnHierarchy)
+            if (!string.IsNullOrWhiteSpace(searchName))
+                query = query.Where(pt => searchName.ToUpperInvariant().Contains(pt.Name.ToUpperInvariant()));
+            if (returnHierarchy)
                 query = query.Include(pt => pt.InverseParentFKNavigation);
 
             //Fill 
@@ -47,18 +47,18 @@ namespace BP.ShoppingTracker.I31.DataService
             foreach (var item in resultDb)
             {
                 var type = mapper.Repo2Domain(item);
-                if (ReturnHierarchy)
+                if (returnHierarchy)
                     type.Children = mapper.Repo2Domain(resultDb.Where(child => type.Id == child.ParentFK));
                 result.Add(type);
             }
 
             //Fill optional fields
-            if (IncludeCategory)
+            if (includeCategory)
             {
                 var categories = await this.ReadProductCategories();
                 foreach (var pt in result)
                     pt.ProductCategory = categories.Where(c => c.Id == pt.ProductCategoryFK).FirstOrDefault();
-                if (ReturnHierarchy)
+                if (returnHierarchy)
                     foreach (var pt in result.SelectMany(pt => pt.Children))
                         pt.ProductCategory = categories.Where(c => c.Id == pt.ProductCategoryFK).FirstOrDefault();
             }
@@ -72,12 +72,12 @@ namespace BP.ShoppingTracker.I31.DataService
             return mapper.Repo2Domain(query);
         }
 
-        public async Task<IEnumerable<FormatType>> ReadFormatTypes(string SearchName = "")
+        public async Task<IEnumerable<FormatType>> ReadFormatTypes(string searchName = "")
         {
             List<FormatType> response = new List<FormatType>();
             var query = dbContext.FormatTypes.AsNoTracking();
-            if (!string.IsNullOrWhiteSpace(SearchName))
-                query = query.Where(ft => ft.Name.ToUpperInvariant().Contains(SearchName.ToUpperInvariant()));
+            if (!string.IsNullOrWhiteSpace(searchName))
+                query = query.Where(ft => ft.Name.ToUpperInvariant().Contains(searchName.ToUpperInvariant()));
 
             var result = await query.ToListAsync();
             foreach (var item in result)
@@ -86,55 +86,96 @@ namespace BP.ShoppingTracker.I31.DataService
             return response;
         }
 
-        public async Task<Format> ReadFormat(Guid Id, bool IncludeParent = true)
+        public async Task<Format> ReadFormat(Guid id, Guid idDerived = default(Guid))
         {
             Format format = new Format();
-            var query = dbContext.Formats.AsNoTracking();
-            //if (IncludeParent)
-            //    query = query.Include(f => f.ParentFKNavigation).ThenInclude(f2 => f2.MeasureTypeFKNavigation).Include(f2 => f2.FormatTypeFKNavigation);
-            query = query.Include(f => f.MeasureTypeFKNavigation).Include(f => f.FormatTypeFKNavigation);
+            var query = await dbContext.CombinedFormats.AsNoTracking()
+                .Include(cf => cf.MainFormatFKNavigation).ThenInclude(f => f.MeasureTypeFKNavigation)
+                .Include(cf => cf.MainFormatFKNavigation).ThenInclude(f => f.FormatTypeFKNavigation)
+                .Include(cf => cf.DerivedFormatFKNavigation).ThenInclude(f => f.MeasureTypeFKNavigation)
+                .Include(cf => cf.DerivedFormatFKNavigation).ThenInclude(f => f.FormatTypeFKNavigation)
+                .SingleOrDefaultAsync(cf => cf.MainFormatFK == id && cf.DerivedFormatFK == idDerived);
 
-            var result = await query.SingleOrDefaultAsync(f => f.ID == Id);
-
-            format = mapper.Repo2Domain(result);
-            if (format is not null)
-            {
-                format.FormatType = mapper.Repo2Domain(result.FormatTypeFKNavigation);
-                format.MeasureType = mapper.Repo2Domain(result.MeasureTypeFKNavigation);
-                if (IncludeParent && format.ParentFK != default(Guid))
-                {
-                    var parentBuilded = await this.ReadFormat((Guid)format.ParentFK, false);
-                    format.MainFormat = parentBuilded;
-                }
-            }
+            format = mapper.MapCombinedFormat(query);
             return format;
         }
-
         public async Task<IEnumerable<Format>> ReadFormats()
         {
             List<Format> formats = new List<Format>();
-            var query = dbContext.Formats.AsNoTracking().Include(f => f.MeasureTypeFKNavigation).Include(f => f.FormatTypeFKNavigation);
+            var query = dbContext.CombinedFormats.AsNoTracking()
+                .Include(cf => cf.MainFormatFKNavigation).ThenInclude(f => f.MeasureTypeFKNavigation)
+                .Include(cf => cf.MainFormatFKNavigation).ThenInclude(f => f.FormatTypeFKNavigation)
+                .Include(cf => cf.DerivedFormatFKNavigation).ThenInclude(f => f.MeasureTypeFKNavigation)
+                .Include(cf => cf.DerivedFormatFKNavigation).ThenInclude(f => f.FormatTypeFKNavigation);
 
             var result = await query.ToListAsync();
-            //TODO- está mal
-            //rellenar aquellos derivados
-            foreach (var item in result)
-            {
-                var format = mapper.Repo2Domain(item);
-                format.MeasureType = mapper.Repo2Domain(item.MeasureTypeFKNavigation);
-                format.FormatType = mapper.Repo2Domain(item.FormatTypeFKNavigation);
-                var parentDB = result.FirstOrDefault(f => f.ID == format.ParentFK);
-                if (parentDB is not null)
-                {
-                    var parent = mapper.Repo2Domain(parentDB);
-                    parent.MeasureType = mapper.Repo2Domain(parentDB.MeasureTypeFKNavigation);
-                    parent.FormatType = mapper.Repo2Domain(parentDB.FormatTypeFKNavigation);
-                    format.MainFormat = parent;
-                }
-                formats.Add(format);
-            }
+
+            formats = mapper.MapCombinedFormat(result).ToList();
             return formats;
         }
+
+        public async Task<Company> ReadCompany(Guid id)
+        {
+            Company company = new Company();
+            var result = await dbContext.Companies.AsNoTracking()
+                .Include(c => c.Brands)
+                .SingleOrDefaultAsync();
+
+            company = mapper.Repo2Domain(result);
+            if (company is not null)
+                company.Brands = mapper.Repo2Domain(result.Brands);
+            return company;
+        }
+        public async Task<IEnumerable<Company>> ReadCompanies(bool includeBrands = false)
+        {
+            List<Company> companies = new List<Company>();
+            var query = dbContext.Companies.AsNoTracking();
+            if (includeBrands)
+                query = query.Include(c => c.Brands);
+
+            var response = await query.ToListAsync();
+            foreach (var companyDb in response)
+            {
+                var company = mapper.Repo2Domain(companyDb);
+                if (includeBrands)
+                    company.Brands = mapper.Repo2Domain(companyDb.Brands);
+            }
+            return companies;
+        }
+
+        public async Task<Brand> ReadBrand(Guid id)
+        {
+            Brand brand = new Brand();
+            var result = await dbContext.Brands.AsNoTracking()
+                .Include(b => b.CompanyFKNavigation)
+                .SingleOrDefaultAsync(b => b.ID == id);
+            brand = mapper.Repo2Domain(result);
+            if (brand is not null)
+                brand.Company = mapper.Repo2Domain(result.CompanyFKNavigation);
+            return brand;
+        }
+        public async Task<IEnumerable<Brand>> ReadBrands(string searchName = "", bool includeCompany = true)
+        {
+            List<Brand> brands = new List<Brand>();
+            var query = dbContext.Brands.AsNoTracking();
+            if (includeCompany)
+                query = query.Include(c => c.CompanyFKNavigation);
+            if (!string.IsNullOrWhiteSpace(searchName))
+                query = query.Where(b => b.Name.ToUpperInvariant().Contains(searchName.ToUpperInvariant()));
+
+            var result = await query.ToListAsync();
+            foreach (var brandDB in result)
+            {
+                var brand = mapper.Repo2Domain(brandDB);
+                if(includeCompany)
+                    brand.Company = mapper.Repo2Domain(brandDB.CompanyFKNavigation);
+                brands.Add(brand);
+            }
+            return brands;
+        }
+
+
+
 
     }
 }

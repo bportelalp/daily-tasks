@@ -8,5 +8,6 @@ namespace BP.ShoppingTracker.D10.Models.Products
 {
     public class Company : Base.EntityBase
     {
+        public IEnumerable<Brand> Brands { get; set; }
     }
 }

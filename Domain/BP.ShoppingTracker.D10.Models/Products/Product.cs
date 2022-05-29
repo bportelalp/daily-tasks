@@ -8,9 +8,9 @@ namespace BP.ShoppingTracker.D10.Models.Products
 {
     public class Product : Base.EntityBase
     {
-        public Guid Id { get; set; }
         public Guid ProductTypeFK { get; set; }
-        public Guid FormatFK { get; set; }
+        public Guid FormatFK1 { get; set; }
+        public Guid FormatFK2 { get; set; }
         public Guid BrandFK { get; set; }
         public int? BarCode { get; set; }
 

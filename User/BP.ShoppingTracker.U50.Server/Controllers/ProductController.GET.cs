@@ -162,13 +162,30 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             return Problem();
         }
 
-        [HttpGet("format/{Id}")]
-        public async Task<IActionResult> GetFormat([FromRoute] Guid Id)
+        [HttpGet("format/{IdMain}/{IdDerived}")]
+        public async Task<IActionResult> GetFormat([FromRoute] Guid IdMain, [FromRoute] Guid IdDerived = default(Guid))
         {
             try
             {
-                var response = await dataService.ReadFormat(Id);
-                var cadena = response.ToString();
+                var response = await dataService.ReadFormat(IdMain, IdDerived);
+                if (response is null)
+                    return NotFound();
+                else
+                    return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                BadRequest(ex.Message);
+            }
+            return Problem();
+        }
+
+        [HttpGet("company")]
+        public async Task<IActionResult> GetCompany([FromQuery] bool includeBrands = false)
+        {
+            try
+            {
+                var response = await dataService.ReadCompanies(includeBrands);
                 if (response is null)
                     return NotFound();
                 else

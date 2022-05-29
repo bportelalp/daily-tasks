@@ -41,32 +41,35 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CompanyFK");
+                    b.HasIndex(new[] { "CompanyFK" }, "IX_Brand_CompanyFK");
 
                     b.ToTable("Brand");
                 });
 
             modelBuilder.Entity("BP.ShoppingTracker.I30.Persistence.Entities.CombinedFormat", b =>
                 {
-                    b.Property<Guid>("MainFormatFK")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DerivedFormatFK")
+                    b.Property<Guid>("ID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool?>("Active")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasDefaultValueSql("(CONVERT([bit],(1)))");
 
-                    b.HasKey("MainFormatFK", "DerivedFormatFK");
+                    b.Property<Guid>("DerivedFormatFK")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("DerivedFormatFK");
+                    b.Property<Guid>("MainFormatFK")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex(new[] { "DerivedFormatFK" }, "IX_Format_Format_DerivedFormatFK");
+
+                    b.HasIndex(new[] { "MainFormatFK" }, "IX_Format_Format_MainFormatFK");
 
                     b.ToTable("CombinedFormat");
-
-                    b.HasComment("Permite la posibilidad de que un producto tenga formato derivado: (pack de 6 latas de 300g) => (pack de 6) -> (latas de 300g)");
                 });
 
             modelBuilder.Entity("BP.ShoppingTracker.I30.Persistence.Entities.Company", b =>
@@ -93,30 +96,24 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                     b.Property<Guid>("ID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BrandFK")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProductFK")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double?>("RateSale")
-                        .HasColumnType("float")
-                        .HasComment("En tanto por uno, porcentaje de descuento aplicado dando como resultado el valor de Value");
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("RegisteredOn")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<bool>("SalePrice")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ProductFK");
+                    b.HasIndex(new[] { "ProductFK" }, "IX_CostEvolution_ProductFK");
 
                     b.ToTable("CostEvolution");
                 });
@@ -130,7 +127,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<Guid>("FormatTypeFK")
                         .HasColumnType("uniqueidentifier");
@@ -138,14 +135,17 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                     b.Property<int>("MeasureTypeFK")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("ParentFK")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Value")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("FormatTypeFK");
+                    b.HasIndex(new[] { "FormatTypeFK" }, "IX_Format_FormatTypeFK");
 
-                    b.HasIndex("MeasureTypeFK");
+                    b.HasIndex(new[] { "MeasureTypeFK" }, "IX_Format_MeasureTypeFK");
 
                     b.ToTable("Format");
                 });
@@ -159,7 +159,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
@@ -212,7 +212,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<int?>("BarCode")
                         .HasColumnType("int");
@@ -224,10 +224,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<Guid>("FormatFK1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("FormatFK2")
+                    b.Property<Guid>("FormatFK")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -240,11 +237,11 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BrandFK");
+                    b.HasIndex(new[] { "BrandFK" }, "IX_Product_BrandFK");
 
-                    b.HasIndex("ProductTypeFK");
+                    b.HasIndex(new[] { "FormatFK" }, "IX_Product_FormatFK");
 
-                    b.HasIndex("FormatFK1", "FormatFK2");
+                    b.HasIndex(new[] { "ProductTypeFK" }, "IX_Product_ProductTypeFK");
 
                     b.ToTable("Product");
                 });
@@ -258,7 +255,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<string>("Description")
                         .HasMaxLength(150)
@@ -285,7 +282,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
@@ -304,9 +301,9 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ParentFK");
+                    b.HasIndex(new[] { "ParentFK" }, "IX_ProductType_ParentFK");
 
-                    b.HasIndex("ProductCategoryFK");
+                    b.HasIndex(new[] { "ProductCategoryFK" }, "IX_ProductType_ProductCategoryFK");
 
                     b.ToTable("ProductType");
                 });
@@ -378,17 +375,17 @@ namespace BP.ShoppingTracker.I30.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Product_Brand");
 
+                    b.HasOne("BP.ShoppingTracker.I30.Persistence.Entities.CombinedFormat", "FormatFKNavigation")
+                        .WithMany("Products")
+                        .HasForeignKey("FormatFK")
+                        .IsRequired()
+                        .HasConstraintName("FK_Product_Format");
+
                     b.HasOne("BP.ShoppingTracker.I30.Persistence.Entities.ProductType", "ProductTypeFKNavigation")
                         .WithMany("Products")
                         .HasForeignKey("ProductTypeFK")
                         .IsRequired()
                         .HasConstraintName("FK_Product_ProductType");
-
-                    b.HasOne("BP.ShoppingTracker.I30.Persistence.Entities.CombinedFormat", "FormatFKNavigation")
-                        .WithMany("Products")
-                        .HasForeignKey("FormatFK1", "FormatFK2")
-                        .IsRequired()
-                        .HasConstraintName("FK_Product_Format");
 
                     b.Navigation("BrandFKNavigation");
 

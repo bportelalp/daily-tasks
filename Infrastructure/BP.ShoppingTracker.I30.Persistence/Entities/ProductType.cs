@@ -34,7 +34,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Entities
         public virtual ProductCategory ProductCategoryFKNavigation { get; set; } = null!;
         [InverseProperty("ParentFKNavigation")]
         public virtual ICollection<ProductType> InverseParentFKNavigation { get; set; }
-        [InverseProperty("ProductTypeFK1")]
+        [InverseProperty("ProductTypeFKNavigation")]
         public virtual ICollection<Product> Products { get; set; }
     }
 }

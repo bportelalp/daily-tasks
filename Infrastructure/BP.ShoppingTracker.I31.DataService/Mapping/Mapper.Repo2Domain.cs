@@ -80,7 +80,6 @@ namespace BP.ShoppingTracker.I31.DataService.Mapping
                 ID = domain.Id,
                 FormatTypeFK = domain.FormatTypeFK,
                 MeasureTypeFK = domain.MeasureTypeFK,
-                ParentFK = domain.ParentFK,
                 Value = domain.Value,
                 Active = domain.Active
             };
@@ -121,7 +120,8 @@ namespace BP.ShoppingTracker.I31.DataService.Mapping
                 Name = domain.Name,
                 Description = domain.Description,
                 ProductTypeFK = domain.ProductTypeFK,
-                FormatFK = domain.FormatFK,
+                FormatFK1 = domain.FormatFK1,
+                FormatFK2 = domain.FormatFK2,
                 BrandFK = domain.BrandFK,
                 BarCode = domain.BarCode,
                 Active = domain.Active,

@@ -81,7 +81,6 @@ namespace BP.ShoppingTracker.I31.DataService.Mapping
                 Id = row.ID,
                 FormatTypeFK = row.FormatTypeFK,
                 MeasureTypeFK = row.MeasureTypeFK,
-                ParentFK = row.ParentFK,
                 Value = row.Value,
                 Active = row.Active
             };
@@ -122,7 +121,8 @@ namespace BP.ShoppingTracker.I31.DataService.Mapping
                 Name = row.Name,
                 Description = row.Description,
                 ProductTypeFK = row.ProductTypeFK,
-                FormatFK = row.FormatFK,
+                FormatFK1 = row.FormatFK1,
+                FormatFK2 = row.FormatFK2,
                 BrandFK = row.BrandFK,
                 BarCode = row.BarCode,
                 Active = row.Active,

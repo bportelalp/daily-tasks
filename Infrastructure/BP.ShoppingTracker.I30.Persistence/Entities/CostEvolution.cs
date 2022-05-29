@@ -12,7 +12,6 @@ namespace BP.ShoppingTracker.I30.Persistence.Entities
         [Key]
         public Guid ID { get; set; }
         public Guid ProductFK { get; set; }
-        [Column(TypeName = "datetime")]
         public DateTime RegisteredOn { get; set; }
         public double Value { get; set; }
         public bool SalePrice { get; set; }
