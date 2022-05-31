@@ -17,5 +17,17 @@ namespace BP.ShoppingTracker.I31.DataService
             await dbContext.SaveChangesAsync();
             return mapper.Repo2Domain(entity);
         }
+
+        public async Task<Tuple<Guid,Guid>> UpdateFormatCombination(Guid mainFormatId, Guid derivedFormatId, bool active = true)
+        {
+            var combined = mapper.Domain2Repo(new Tuple<Guid,Guid>(mainFormatId, derivedFormatId));
+            combined.Active = active;
+            if (dbContext.CombinedFormats.Any(cf => cf.MainFormatFK == mainFormatId && cf.DerivedFormatFK == derivedFormatId))
+                dbContext.Entry(combined).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            else
+                dbContext.Add(combined);
+            await dbContext.SaveChangesAsync();
+            return new Tuple<Guid,Guid>(mainFormatId, derivedFormatId);
+        }
     }
 }

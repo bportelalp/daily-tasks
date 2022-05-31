@@ -8,125 +8,128 @@ namespace BP.ShoppingTracker.I31.DataService.Mapping
 {
     internal partial class Mapper : MapperBase
     {
-        internal IEnumerable<I30.Persistence.Entities.ProductCategory> Domain2Repo(IEnumerable<D10.Models.Products.ProductCategory> domain) => MapList(domain, Domain2Repo);
-        internal IEnumerable<I30.Persistence.Entities.ProductType> Domain2Repo(IEnumerable<D10.Models.Products.ProductType> domain) => MapList(domain, Domain2Repo);
-        internal IEnumerable<I30.Persistence.Entities.MeasureType> Domain2Repo(IEnumerable<D10.Models.Products.MeasureType> domain) => MapList(domain, Domain2Repo);
-        internal IEnumerable<I30.Persistence.Entities.FormatType> Domain2Repo(IEnumerable<D10.Models.Products.FormatType> domain) => MapList(domain, Domain2Repo);
-        internal IEnumerable<I30.Persistence.Entities.Format> Domain2Repo(IEnumerable<D10.Models.Products.Format> domain) => MapList(domain, Domain2Repo);
-        internal IEnumerable<I30.Persistence.Entities.Brand> Domain2Repo(IEnumerable<D10.Models.Products.Brand> domain) => MapList(domain, Domain2Repo);
-        internal IEnumerable<I30.Persistence.Entities.Company> Domain2Repo(IEnumerable<D10.Models.Products.Company> domain) => MapList(domain, Domain2Repo);
-        internal IEnumerable<I30.Persistence.Entities.Product> Domain2Repo(IEnumerable<D10.Models.Products.Product> domain) => MapList(domain, Domain2Repo);
 
-        internal I30.Persistence.Entities.ProductCategory Domain2Repo(D10.Models.Products.ProductCategory domain)
+        internal IEnumerable<D10.Models.Products.ProductCategory> Repo2Domain(IEnumerable<I30.Persistence.Entities.ProductCategory> domain) => MapList(domain, Repo2Domain);
+        internal IEnumerable<D10.Models.Products.ProductType> Repo2Domain(IEnumerable<I30.Persistence.Entities.ProductType> domain) => MapList(domain, Repo2Domain);
+        internal IEnumerable<D10.Models.Products.MeasureType> Repo2Domain(IEnumerable<I30.Persistence.Entities.MeasureType> domain) => MapList(domain, Repo2Domain);
+        internal IEnumerable<D10.Models.Products.FormatType> Repo2Domain(IEnumerable<I30.Persistence.Entities.FormatType> domain) => MapList(domain, Repo2Domain);
+        internal IEnumerable<D10.Models.Products.Format> Repo2Domain(IEnumerable<I30.Persistence.Entities.Format> domain) => MapList(domain, Repo2Domain);
+        internal IEnumerable<D10.Models.Products.Brand> Repo2Domain(IEnumerable<I30.Persistence.Entities.Brand> domain) => MapList(domain, Repo2Domain);
+        internal IEnumerable<D10.Models.Products.Company> Repo2Domain(IEnumerable<I30.Persistence.Entities.Company> domain) => MapList(domain, Repo2Domain);
+        internal IEnumerable<D10.Models.Products.Product> Repo2Domain(IEnumerable<I30.Persistence.Entities.Product> domain) => MapList(domain, Repo2Domain);
+
+        internal D10.Models.Products.ProductCategory Repo2Domain(I30.Persistence.Entities.ProductCategory row)
         {
-            if (domain is null) return null;
-            I30.Persistence.Entities.ProductCategory row = new I30.Persistence.Entities.ProductCategory()
+            if (row is null) return null;
+            D10.Models.Products.ProductCategory domain = new D10.Models.Products.ProductCategory()
             {
-                ID = domain.Id,
-                Name = domain.Name,
-                Description = domain.Description,
-                Active = domain.Active
+                Id = row.ID,
+                Name = row.Name,
+                Description = row.Description,
+                Active = row.Active
             };
-            return row;
+            return domain;
         }
 
-        internal I30.Persistence.Entities.ProductType Domain2Repo(D10.Models.Products.ProductType domain)
+        internal D10.Models.Products.ProductType Repo2Domain(I30.Persistence.Entities.ProductType row)
         {
-            if (domain is null) return null;
-            I30.Persistence.Entities.ProductType row = new I30.Persistence.Entities.ProductType()
+            if (row is null) return null;
+            D10.Models.Products.ProductType domain = new D10.Models.Products.ProductType()
             {
-                ID = domain.Id,
-                Name = domain.Name,
-                Description = domain.Description,
-                Active = domain.Active,
-                ProductCategoryFK = domain.ProductCategoryFK,
-                ParentFK = domain.ParentFK,
+                Id = row.ID,
+                Name = row.Name,
+                Description = row.Description,
+                Active = row.Active,
+                ProductCategoryFK = row.ProductCategoryFK,
+                ParentFK = row.ParentFK,
             };
-            return row;
+            return domain;
         }
 
-        internal I30.Persistence.Entities.MeasureType Domain2Repo(D10.Models.Products.MeasureType domain)
+        internal D10.Models.Products.MeasureType Repo2Domain(I30.Persistence.Entities.MeasureType row)
         {
-            if (domain is null) return null;
-            I30.Persistence.Entities.MeasureType row = new I30.Persistence.Entities.MeasureType()
+            if (row is null) return null;
+            D10.Models.Products.MeasureType domain = new D10.Models.Products.MeasureType()
             {
-                ID = domain.Id,
-                Name = domain.Name,
-                Description = domain.Description,
-                Unit = domain.Unit,
-                ScaleFactorSI = domain.ScaleFactorSI
+                Id = row.ID,
+                Name = row.Name,
+                Description = row.Description,
+                Unit = row.Unit,
+                ScaleFactorSI = row.ScaleFactorSI
             };
-            return row;
+            return domain;
         }
 
-        internal I30.Persistence.Entities.FormatType Domain2Repo(D10.Models.Products.FormatType domain)
+        internal D10.Models.Products.FormatType Repo2Domain(I30.Persistence.Entities.FormatType row)
         {
-            if (domain is null) return null;
-            I30.Persistence.Entities.FormatType row = new I30.Persistence.Entities.FormatType()
+            if (row is null) return null;
+            D10.Models.Products.FormatType domain = new D10.Models.Products.FormatType()
             {
-                ID = domain.Id,
-                Name = domain.Name,
-                Description = domain.Description,
-                Active = domain.Active
+                Id = row.ID,
+                Name = row.Name,
+                Description = row.Description,
+                Active = row.Active
             };
-            return row;
+            return domain;
         }
 
-        internal I30.Persistence.Entities.Format Domain2Repo(D10.Models.Products.Format domain)
+        internal D10.Models.Products.Format Repo2Domain(I30.Persistence.Entities.Format row)
         {
-            if (domain is null) return null;
-            I30.Persistence.Entities.Format row = new I30.Persistence.Entities.Format()
+            if (row is null) return null;
+            D10.Models.Products.Format domain = new D10.Models.Products.Format()
             {
-                ID = domain.Id,
-                FormatTypeFK = domain.FormatTypeFK,
-                MeasureTypeFK = domain.MeasureTypeFK,
-                Value = domain.Value,
-                Active = domain.Active
+                Id = row.ID,
+                FormatTypeFK = row.FormatTypeFK,
+                MeasureTypeFK = row.MeasureTypeFK,
+                Value = row.Value,
+                Active = row.Active
             };
-            return row;
+            return domain;
         }
 
-        internal I30.Persistence.Entities.Brand Domain2Repo(D10.Models.Products.Brand domain)
+        internal D10.Models.Products.Brand Repo2Domain(I30.Persistence.Entities.Brand row)
         {
-            if (domain is null) return null;
-            I30.Persistence.Entities.Brand row = new I30.Persistence.Entities.Brand()
+            if (row is null) return null;
+            D10.Models.Products.Brand domain = new D10.Models.Products.Brand()
             {
-                ID = domain.Id,
-                Name = domain.Name,
-                Description = domain.Description,
-                CompanyFK = domain.CompanyFK
+                Id = row.ID,
+                Name = row.Name,
+                Description = row.Description,
+                CompanyFK = row.CompanyFK
             };
-            return row;
+            return domain;
         }
 
-        internal I30.Persistence.Entities.Company Domain2Repo(D10.Models.Products.Company domain)
+        internal D10.Models.Products.Company Repo2Domain(I30.Persistence.Entities.Company row)
         {
-            if (domain is null) return null;
-            I30.Persistence.Entities.Company row = new I30.Persistence.Entities.Company()
+            if (row is null) return null;
+            D10.Models.Products.Company domain = new D10.Models.Products.Company()
             {
-                ID = domain.Id,
-                Name = domain.Name,
-                Description = domain.Description
+                Id = row.ID,
+                Name = row.Name,
+                Description = row.Description
             };
-            return row;
+            return domain;
         }
 
-        internal I30.Persistence.Entities.Product Domain2Repo(D10.Models.Products.Product domain)
+        internal D10.Models.Products.Product Repo2Domain(I30.Persistence.Entities.Product row)
         {
-            if (domain is null) return null;
-            I30.Persistence.Entities.Product row = new I30.Persistence.Entities.Product()
+            if (row is null) return null;
+            D10.Models.Products.Product domain = new D10.Models.Products.Product()
             {
-                ID = domain.Id,
-                Name = domain.Name,
-                Description = domain.Description,
-                ProductTypeFK = domain.ProductTypeFK,
-                FormatFK1 = domain.FormatFK1,
-                FormatFK2 = domain.FormatFK2,
-                BrandFK = domain.BrandFK,
-                BarCode = domain.BarCode,
-                Active = domain.Active,
+                Id = row.ID,
+                Name = row.Name,
+                Description = row.Description,
+                ProductTypeFK = row.ProductTypeFK,
+                FormatFK1 = row.FormatFK1,
+                FormatFK2 = row.FormatFK2,
+                BrandFK = row.BrandFK,
+                BarCode = row.BarCode,
+                Active = row.Active,
             };
-            return row;
+            return domain;
         }
+
+
     }
 }

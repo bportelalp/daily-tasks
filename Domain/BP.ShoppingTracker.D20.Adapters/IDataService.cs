@@ -14,7 +14,8 @@ namespace BP.ShoppingTracker.D20.Adapters
         Task CreateAsync(ProductType productType);
         Task CreateAsync(FormatType formatType);
         Task CreateAsync(MeasureType measureType);
-        Task CreateAsync(Format format);
+        Task CreateAsync(Format format, bool updateMainFormat = true, bool updateDerivedFormat = false);
+        Task CreateAsync(Tuple<Guid, Guid> CombinedId);
         Task CreateAsync(Company company);
         Task CreateAsync(Brand brand);
         Task CreateAsync(Product product);
@@ -41,10 +42,13 @@ namespace BP.ShoppingTracker.D20.Adapters
         Task<IEnumerable<Company>> ReadCompanies(bool includeBrands = false);
         Task<Brand> ReadBrand(Guid id);
         Task<IEnumerable<Brand>> ReadBrands(string searchName = "", bool includeCompany = true);
+
+        //Task<IEnumerable<Product>> ReadProducts(string searchName = "");
         #endregion
 
         #region UPDATE
         Task<IEnumerable<ProductType>> UpdateProductTypes(IEnumerable<ProductType> productType);
+        Task<Tuple<Guid, Guid>> UpdateFormatCombination(Guid mainFormatId, Guid derivedFormatId, bool active = true);
         #endregion
 
         #region DELETE

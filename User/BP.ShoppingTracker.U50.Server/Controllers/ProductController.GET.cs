@@ -7,7 +7,7 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public partial class ProductController : Controller
+    public partial class ProductController : ControllerBase
     {
         private readonly IDataService dataService;
 
@@ -30,9 +30,8 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         [HttpGet("product-category/{Id}")]
@@ -49,9 +48,8 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         [HttpGet("product-type")]
@@ -64,9 +62,8 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return Problem();
         }
 
         [HttpGet("product-type/{Id}")]
@@ -80,9 +77,8 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return Problem();
         }
 
         [HttpGet("measure-type/{Id?}")]
@@ -102,9 +98,8 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return Problem();
         }
 
         [HttpGet("format-type")]
@@ -120,9 +115,8 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return Problem();
         }
 
         [HttpGet("format-type/{Id}")]
@@ -139,9 +133,8 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return Problem();
         }
 
         [HttpGet("format")]
@@ -157,9 +150,8 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return Problem();
         }
 
         [HttpGet("format/{IdMain}/{IdDerived}")]
@@ -175,9 +167,8 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return Problem();
         }
 
         [HttpGet("company")]
@@ -193,9 +184,8 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
             catch (Exception ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
-            return Problem();
         }
     }
 }

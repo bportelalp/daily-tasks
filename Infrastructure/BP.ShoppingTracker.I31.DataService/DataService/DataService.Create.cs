@@ -49,10 +49,32 @@ namespace BP.ShoppingTracker.I31.DataService
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task CreateAsync(Format format)
+        public async Task CreateAsync(Format format, bool updateMainFormat = true, bool updateDerivedFormat = false)
         {
-            var row = mapper.Domain2Repo(format);
-            dbContext.Add(row);
+            I30.Persistence.Entities.CombinedFormat composed = mapper.Domain2Repo(format.ComposedId);
+            I30.Persistence.Entities.Format mainFormat = mapper.Domain2Repo(format);
+            I30.Persistence.Entities.Format derivedFormat = mapper.Domain2Repo(format.DerivedFormat);
+            if (updateMainFormat)
+            {
+                if (dbContext.Formats.Any(f => f.ID == mainFormat.ID))
+                    dbContext.Entry(mainFormat).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                else
+                    dbContext.Add(mainFormat);
+            }
+            if (updateDerivedFormat)
+            {
+                if(dbContext.Formats.Any(f => f.ID == derivedFormat.ID))
+                    dbContext.Entry(derivedFormat).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            }
+            dbContext.Add(composed);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task CreateAsync(Tuple<Guid, Guid> CombinedId)
+        {
+            var combined = mapper.Domain2Repo(CombinedId);
+            combined.Active = true;
+            dbContext.Add(combined);
             await dbContext.SaveChangesAsync();
         }
 
