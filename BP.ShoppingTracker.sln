@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BP.ShoppingTracker.U40.Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BP.ShoppingTracker.IoC.Server", "User\BP.ShoppingTracker.IoC.Server\BP.ShoppingTracker.IoC.Server.csproj", "{744B9A7A-8021-4D5C-BE77-E931CE459C41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BP.ShoppingTracker.D20.Models", "Domain\BP.ShoppingTracker.D20.Models\BP.ShoppingTracker.D20.Models.csproj", "{28C336F0-DBF3-4AAA-AEEA-6103E26BF5D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{744B9A7A-8021-4D5C-BE77-E931CE459C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{744B9A7A-8021-4D5C-BE77-E931CE459C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{744B9A7A-8021-4D5C-BE77-E931CE459C41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28C336F0-DBF3-4AAA-AEEA-6103E26BF5D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28C336F0-DBF3-4AAA-AEEA-6103E26BF5D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28C336F0-DBF3-4AAA-AEEA-6103E26BF5D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28C336F0-DBF3-4AAA-AEEA-6103E26BF5D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{1013A85C-5418-42B2-81D3-7B426B20C6C8} = {2A907675-9FF8-48BE-BF48-1B40127F346A}
 		{E4728C48-3F40-40F8-B562-EFF522C698A6} = {2A907675-9FF8-48BE-BF48-1B40127F346A}
 		{744B9A7A-8021-4D5C-BE77-E931CE459C41} = {2A907675-9FF8-48BE-BF48-1B40127F346A}
+		{28C336F0-DBF3-4AAA-AEEA-6103E26BF5D1} = {236DB0F9-FD22-45FD-82E0-413E6CE5F290}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73A74D63-D20E-4A28-8D73-720A3933E015}

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using BP.ShoppingTracker.I30.Persistence.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace BP.ShoppingTracker.I30.Persistence.Context
 {
-    public partial class ShoppingTrackerContext : DbContext
+    public partial class ShoppingTrackerContext : IdentityDbContext
     {
         public ShoppingTrackerContext()
         {
@@ -180,6 +181,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Context
             });
 
             OnModelCreatingPartial(modelBuilder);
+            base.OnModelCreating(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
