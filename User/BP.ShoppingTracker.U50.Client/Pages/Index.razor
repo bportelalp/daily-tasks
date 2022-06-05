@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using BP.ShoppingTracker.D10.Models.Products
 
 <PageTitle>Index</PageTitle>
 
@@ -7,3 +8,18 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<button class="btn btn-outline-primary" @onclick="Pedir">Pedir</button>
+
+@code {
+    [Inject] public Repository.ProductRepo Repo { get; set; }
+
+    public async void Pedir()
+    {
+        var response = await Repo.GetAsync<List<ProductType>>(Repository.Endpoints.PRODUCT_TYPE);
+        if(response.Response is not null)
+        {
+            
+        }
+    }
+}

@@ -53,11 +53,11 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
         }
 
         [HttpGet("product-type")]
-        public async Task<IActionResult> GetProductType([FromQuery] string? SearchName, bool IncludeCategory = true, bool returnHierarchy = false)
+        public async Task<IActionResult> GetProductType([FromQuery] string? searchName, bool IncludeCategory = true, bool returnHierarchy = false)
         {
             try
             {
-                var response = await dataService.ReadProductTypes(SearchName,IncludeCategory, returnHierarchy);
+                var response = await dataService.ReadProductTypes(searchName,IncludeCategory, returnHierarchy);
                 return Ok(response);
             }
             catch (Exception ex)

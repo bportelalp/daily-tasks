@@ -9,9 +9,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.D10.Models\BP.ShoppingTracker.D10.Models.csproj" />
     <ProjectReference Include="..\BP.ShoppingTracker.U50.Shared\BP.ShoppingTracker.U50.Shared.csproj" />
   </ItemGroup>
 

@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.D20.Adapters\BP.ShoppingTracker.D20.Adapters.csproj" />
     <ProjectReference Include="..\BP.ShoppingTracker.IoC.Server\BP.ShoppingTracker.IoC.Server.csproj" />
     <ProjectReference Include="..\BP.ShoppingTracker.U40.Server.Controllers\BP.ShoppingTracker.U40.Server.WebAPI.csproj" />
     <ProjectReference Include="..\BP.ShoppingTracker.U50.Client\BP.ShoppingTracker.U50.Client.csproj" />

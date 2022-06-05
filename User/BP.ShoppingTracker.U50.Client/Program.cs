@@ -13,6 +13,7 @@ namespace Company.WebApplication1
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped<BP.ShoppingTracker.U50.Client.Repository.ProductRepo>();
 
             await builder.Build().RunAsync();
         }
