@@ -9,10 +9,17 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
+    [CascadingParameter] private Task<AuthenticationState> authenticationState { get; set; }
     private int currentCount = 0;
 
-    private void IncrementCount()
+    private async void IncrementCount()
     {
-        currentCount++;
+        var authState = await authenticationState;
+        var usuario = authState.User;
+
+        if (usuario.Identity.IsAuthenticated)
+            currentCount++;
+        else
+            currentCount--;
     }
 }

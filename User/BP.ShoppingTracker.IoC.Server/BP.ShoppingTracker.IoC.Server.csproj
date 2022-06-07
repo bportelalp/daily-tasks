@@ -1,21 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.D10.Models\BP.ShoppingTracker.D10.Models.csproj" />
-    <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.D20.Adapters\BP.ShoppingTracker.D20.Adapters.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\BP.ShoppingTracker.I30.Persistence\BP.ShoppingTracker.I30.Persistence.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\BP.ShoppingTracker.I31.DataService\BP.ShoppingTracker.I31.DataService.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Domain\BP.ShoppingTracker.D10.Models\BP.ShoppingTracker.D10.Models.csproj" />
+		<ProjectReference Include="..\..\Domain\BP.ShoppingTracker.D20.Adapters\BP.ShoppingTracker.D20.Adapters.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\BP.ShoppingTracker.I30.Persistence\BP.ShoppingTracker.I30.Persistence.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\BP.ShoppingTracker.I31.DataService\BP.ShoppingTracker.I31.DataService.csproj" />
+	</ItemGroup>
 
 </Project>

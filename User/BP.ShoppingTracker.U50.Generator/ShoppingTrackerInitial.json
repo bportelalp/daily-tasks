@@ -14,15 +14,15 @@
       "ProductCategory": "Pastas"
     },
     {
-      "Name": "Atún",
+      "Name": "AtÃºn",
       "ProductCategory": "Conservas",
       "ProductTypes": [
         {
-          "Name": "Atún en aceite de oliva",
+          "Name": "AtÃºn en aceite de oliva",
           "ProductCategory": "Conservas"
         },
         {
-          "Name": "Atún en aceite de girasol",
+          "Name": "AtÃºn en aceite de girasol",
           "ProductCategory": "Conservas"
         }
       ]
@@ -57,19 +57,19 @@
     },
     {
       "Name": "Pan",
-      "ProductCategory": "Panadería"
+      "ProductCategory": "Panaderï¿½a"
     },
     {
       "Name": "Pan de molde",
-      "ProductCategory": "Panadería",
+      "ProductCategory": "Panaderï¿½a",
       "ProductTypes": [
         {
           "Name": "Pan de molde integral",
-          "ProductCategory": "Panadería"
+          "ProductCategory": "PanaderÃ­a"
         },
         {
           "Name": "Pan de molde de semillas",
-          "ProductCategory": "Panadería"
+          "ProductCategory": "Panaderï¿½a"
         }
       ]
     },

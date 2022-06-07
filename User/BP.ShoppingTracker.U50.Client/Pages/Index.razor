@@ -9,6 +9,15 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
+<AuthorizeView Roles="admin">
+    <Authorized>
+        <text>Autorizado, @context.User.Identity.Name</text>
+    </Authorized>
+    <NotAuthorized>
+        <text>No autorizado</text>
+    </NotAuthorized>
+</AuthorizeView>
+
 <button class="btn btn-outline-primary" @onclick="Pedir">Pedir</button>
 
 @code {
