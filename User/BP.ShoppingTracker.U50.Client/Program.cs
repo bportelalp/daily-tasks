@@ -14,10 +14,11 @@ namespace Company.WebApplication1
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
+            builder.Services.AddScoped<BP.Components.RepositoryClient.IRepoClient,BP.Components.RepositoryClient.RepoClient>();
+
             builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, AuthProviderTest>();
-            builder.Services.AddScoped<BP.ShoppingTracker.U50.Client.Repository.ProductRepo>();
 
             await builder.Build().RunAsync();
         }

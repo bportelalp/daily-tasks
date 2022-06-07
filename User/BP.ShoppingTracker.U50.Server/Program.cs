@@ -2,7 +2,7 @@ using BP.ShoppingTracker.IoC.Server;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Company.WebApplication1
+namespace BP.ShoppingTracker.U50.Server
 {
     public class Program
     {
@@ -16,6 +16,7 @@ namespace Company.WebApplication1
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             builder.Services.AddSwaggerGen();
+
             builder.Services.ConfigureIoC(configuration);
 
             var app = builder.Build();

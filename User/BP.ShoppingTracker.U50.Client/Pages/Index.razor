@@ -13,19 +13,17 @@ Welcome to your new app.
     <Authorized>
         <text>Autorizado, @context.User.Identity.Name</text>
     </Authorized>
-    <NotAuthorized>
-        <text>No autorizado</text>
-    </NotAuthorized>
 </AuthorizeView>
 
 <button class="btn btn-outline-primary" @onclick="Pedir">Pedir</button>
 
 @code {
-    [Inject] public Repository.ProductRepo Repo { get; set; }
+    [Inject] public IRepoClient Repo { get; set; }
 
     public async void Pedir()
     {
-        var response = await Repo.GetAsync<List<ProductType>>(Repository.Endpoints.PRODUCT_TYPE);
+        var query = Repo.BuildQuery(Endpoints.PRODUCT_TYPE, "includeCategory", true, "returnhierarchy", true);
+        var response = await Repo.GetAsync<List<ProductType>>(query);
         if(response.Response is not null)
         {
             

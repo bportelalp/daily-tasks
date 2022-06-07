@@ -22,6 +22,7 @@ namespace BP.ShoppingTracker.IoC.Server
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<I30.Persistence.Context.ShoppingTrackerContext>()
                 .AddDefaultTokenProviders();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
@@ -45,7 +46,9 @@ namespace BP.ShoppingTracker.IoC.Server
                 case "PostgreSQL": builder.UseNpgsql(connection); break;
                 default: throw new PlatformNotSupportedException($"The database provider is not supported: {databaseProvider}");
             }
-            builder.EnableSensitiveDataLogging();
+            bool enableDataLogging = configuration.GetValue<bool>("EnableEFCoreDataLogging");
+            if (enableDataLogging)
+                builder.EnableSensitiveDataLogging();
         }
     }
 }
