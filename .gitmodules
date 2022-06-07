@@ -1,0 +1,3 @@
+[submodule "Components"]
+	path = Components
+	url = https://github.com/bportelalp/dotnet-components
