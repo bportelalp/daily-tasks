@@ -1,5 +1,7 @@
 ﻿using BP.ShoppingTracker.D10.Models.Products;
 using BP.ShoppingTracker.D20.Adapters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

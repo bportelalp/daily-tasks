@@ -24,5 +24,6 @@ IConfiguration configuration = host.Services.GetService<IConfiguration>();
 var generator = host.Services.GetService<IGenerator>();
 
 var path = configuration.GetSection("PathConfigurationFile").Value;
+path = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), path);
 await generator.GenerateInitialRows(path);
 
