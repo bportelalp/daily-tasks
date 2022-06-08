@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\Blazor\BP.Components.Blazor.UI\BP.Components.Blazor.UI.csproj" />
     <ProjectReference Include="..\..\Components\Components\BP.Components.RepositoryClient\BP.Components.RepositoryClient.csproj" />
     <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.D10.Models\BP.ShoppingTracker.D10.Models.csproj" />
     <ProjectReference Include="..\BP.ShoppingTracker.U50.Shared\BP.ShoppingTracker.U50.Shared.csproj" />

@@ -14,11 +14,17 @@ namespace Company.WebApplication1
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            builder.Services.AddScoped<BP.Components.RepositoryClient.IRepoClient,BP.Components.RepositoryClient.RepoClient>();
 
             builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddAuthorizationCore();
-            builder.Services.AddScoped<AuthenticationStateProvider, AuthProviderTest>();
+            builder.Services.AddScoped<AuthProviderJwt>();
+            builder.Services.AddScoped<AuthenticationStateProvider, AuthProviderJwt>(provider => provider.GetRequiredService<AuthProviderJwt>());
+            builder.Services.AddScoped<ILoginService, AuthProviderJwt>(provider => provider.GetRequiredService<AuthProviderJwt>());
+
+            builder.Services.AddScoped<BP.Components.RepositoryClient.IRepoClient,BP.Components.RepositoryClient.RepoClient>();
+            builder.Services.AddScoped<BP.Components.Blazor.UI.Services.LocalStorageService>();
+            
+
 
             await builder.Build().RunAsync();
         }
