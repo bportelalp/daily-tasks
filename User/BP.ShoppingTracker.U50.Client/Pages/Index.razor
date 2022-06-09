@@ -22,7 +22,7 @@ Welcome to your new app.
 
     public async void Pedir()
     {
-        var query = Repo.BuildQuery(Endpoints.PRODUCT_TYPE, "includeCategory", true, "returnhierarchy", true);
+        var query = Repo.BuildQuery(EndpointProduct.PRODUCT_TYPE, "includeCategory", true, "returnhierarchy", true);
         var response = await Repo.GetAsync<List<ProductType>>(query);
         if(response.Response is not null)
         {

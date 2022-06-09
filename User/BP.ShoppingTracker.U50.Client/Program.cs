@@ -22,7 +22,8 @@ namespace Company.WebApplication1
             builder.Services.AddScoped<ILoginService, AuthProviderJwt>(provider => provider.GetRequiredService<AuthProviderJwt>());
 
             builder.Services.AddScoped<BP.Components.RepositoryClient.IRepoClient,BP.Components.RepositoryClient.RepoClient>();
-            builder.Services.AddScoped<BP.Components.Blazor.UI.Services.LocalStorageService>();
+            builder.Services.AddScoped<BP.Components.Blazor.UI.FrontendUtils.LocalStorageService>();
+            builder.Services.AddTransient<BP.Components.Blazor.UI.FrontendUtils.PopUp>();
             
 
 

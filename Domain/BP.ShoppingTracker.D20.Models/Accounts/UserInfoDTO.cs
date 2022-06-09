@@ -10,6 +10,8 @@ namespace BP.ShoppingTracker.D20.Models.Accounts
     public class UserInfoDTO
     {
         [Required]
+        public string Username { get; set; }
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
         [Required]

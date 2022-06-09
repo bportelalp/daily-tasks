@@ -29,7 +29,7 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             {
                 var user = new IdentityUser()
                 {
-                    UserName = userInfo.Email,
+                    UserName = userInfo.Username,
                     Email = userInfo.Email,
                 };
                 var result = await userManager.CreateAsync(user, userInfo.Password);

@@ -1,4 +1,4 @@
-﻿using BP.Components.Blazor.UI.Services;
+﻿using BP.Components.Blazor.UI.FrontendUtils;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System.Security.Claims;
