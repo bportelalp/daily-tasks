@@ -1,0 +1,19 @@
+﻿@page "/logout"
+
+<div>
+    Cerrando sesión...
+</div>
+
+@code {
+    [Inject] IRepoClient repo { get; set; }
+    [Inject] NavigationManager navManager { get; set; }
+    [Inject] ILoginService loginService { get; set; }
+    [Inject] BP.Components.Blazor.UI.FrontendUtils.PopUp popUp { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await loginService.Logout();
+        navManager.NavigateTo("");
+        await base.OnInitializedAsync();
+    }
+}

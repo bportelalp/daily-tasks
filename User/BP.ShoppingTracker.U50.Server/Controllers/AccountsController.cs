@@ -49,7 +49,7 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
         {
             try
             {
-                var result = await signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
+                var result = await signInManager.PasswordSignInAsync(userInfo.Username, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
                 if (result.Succeeded)
                     return Ok(BuildToken(userInfo));
                 else

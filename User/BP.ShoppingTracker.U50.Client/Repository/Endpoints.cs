@@ -15,6 +15,7 @@
     {
         public static readonly string ENDPOINT_ACCOUNTS = "api/accounts";
         public static readonly string CREATE_USER = ENDPOINT_ACCOUNTS + "/create-user";
+        public static readonly string LOGIN = ENDPOINT_ACCOUNTS + "/login";
 
     }
 }

@@ -1,0 +1,43 @@
+﻿@page "/login"
+<div class="d-flex justify-content-center">
+    <EditForm class="col col-xl-6 col-md-6 col-sm-8" Model="userInfo" OnValidSubmit="LoginUser">
+        <div class="form-group">
+            <label>Nombre de usuario</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@userInfo.Username" />
+                <ValidationMessage For="() => userInfo.Username" />
+            </div>
+            <label>Contraseña:</label>
+            <div>
+                <InputText type="password" class="form-control" @bind-Value="@userInfo.Password" />
+                <ValidationMessage For="() => userInfo.Email" />
+            </div>
+        </div>
+
+        <button class="btn btn-outline-primary" type="submit">Registrarse</button>
+    </EditForm>
+</div>
+
+
+
+@code {
+    [Inject] IRepoClient repo { get; set; }
+    [Inject] NavigationManager navManager { get; set; }
+    [Inject] ILoginService loginService { get; set; }
+    [Inject] BP.Components.Blazor.UI.FrontendUtils.PopUp popUp { get; set; }
+
+    private UserInfoDTO userInfo { get; set; } = new UserInfoDTO();
+
+    private async Task LoginUser()
+    {
+        var response = await repo.PostAsync<UserInfoDTO, UserTokenDTO>(EndpointAccounts.LOGIN, userInfo);
+        if (response.Error)
+            await popUp.ShowError(await response.ReadAsStringAsync());
+        else
+        {
+            await loginService.Login(response.Response.Token);
+            navManager.NavigateTo("");
+        }
+
+    }
+}
