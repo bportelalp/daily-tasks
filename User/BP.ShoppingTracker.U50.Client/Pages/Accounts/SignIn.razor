@@ -36,7 +36,7 @@
     private async Task CreateUser()
     {
         var response = await repo.PostAsync<UserInfoDTO, UserTokenDTO>(EndpointAccounts.CREATE_USER, userInfo);
-        if (response.Error)
+        if (!response.Success)
             await popUp.ShowError(await response.ReadAsStringAsync());
         else
         {

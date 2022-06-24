@@ -1,5 +1,6 @@
 using BP.ShoppingTracker.U50.Client;
 using BP.ShoppingTracker.U50.Client.Auth;
+using BP.Components.Blazor.UI;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -22,8 +23,9 @@ namespace Company.WebApplication1
             builder.Services.AddScoped<ILoginService, AuthProviderJwt>(provider => provider.GetRequiredService<AuthProviderJwt>());
 
             builder.Services.AddScoped<BP.Components.RepositoryClient.IRepoClient,BP.Components.RepositoryClient.RepoClient>();
-            builder.Services.AddScoped<BP.Components.Blazor.UI.FrontendUtils.LocalStorageService>();
-            builder.Services.AddTransient<BP.Components.Blazor.UI.FrontendUtils.PopUp>();
+            //builder.Services.AddScoped<BP.Components.Blazor.UI.FrontendUtils.LocalStorageService>();
+            //builder.Services.AddTransient<BP.Components.Blazor.UI.FrontendUtils.PopUp>();
+            builder.Services.ConfigureBlazorUIServices();
             
 
 
