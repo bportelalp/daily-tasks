@@ -10,6 +10,14 @@ namespace BP.ShoppingTracker.I31.DataService
 {
     public partial class DataService : IDataService
     {
+        public async Task<ProductCategory> UpdateProductCategory(ProductCategory productCategory)
+        {
+            var entity = mapper.Domain2Repo(productCategory);
+            dbContext.UpdateRange(entity);
+            await dbContext.SaveChangesAsync();
+            return mapper.Repo2Domain(entity);
+        }
+
         public async Task<IEnumerable<ProductType>> UpdateProductTypes(IEnumerable<ProductType> productType)
         {
             var entity = mapper.Domain2Repo(productType);

@@ -12,5 +12,6 @@ namespace BP.ShoppingTracker.D10.Models.Base
         public string Name { get; set; }
         public string Description { get; set; }
         public bool? Active { get; set; }
+        public bool IsActive { get => Active ?? false; set => Active = value; }
     }
 }

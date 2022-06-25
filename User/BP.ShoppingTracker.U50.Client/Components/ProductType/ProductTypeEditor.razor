@@ -1,0 +1,79 @@
+﻿<EditForm EditContext="editContext" OnSubmit="Validate">
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Nombre</div>
+        <div class="col-sm-10">
+            <InputText class="form-control" @bind-Value="Model.Name" />
+            <ValidationMessage For="() => Model.Name" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Descipción</div>
+        <div class="col-sm-10">
+            <InputText class="form-control" @bind-Value="Model.Description" />
+            <ValidationMessage For="() => Model.Description" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Categoría</div>
+        <div class="col-sm-10">
+            <InputSelect class="form-control" @bind-Value="Model.ProductCategoryFK">
+                <option value="@(default(Guid))"></option>
+                @foreach (var cat in categories)
+                {
+                    <option value="@cat.Id">@cat.Name</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="() => Model.ProductCategoryFK" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Activo</div>
+        <div class="col-sm-10">
+            <InputCheckbox class="custom-checkbox" @bind-Value="Model.IsActive" />
+            <ValidationMessage For="() => Model.IsActive" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+</EditForm>
+
+@code {
+    [Inject] IRepoClient Repo { get; set; }
+    [Parameter] public ProductType Model { get; set; }
+    [Parameter] public EventCallback<ProductType> OnEditionFinished { get; set; }
+
+    private bool active { get; set; }
+    private EditContext editContext;
+    private ValidationMessageStore validationMessages;
+    private List<ProductCategory> categories = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Model is null)
+            Model = new();
+
+        editContext = new EditContext(Model);
+        validationMessages = new ValidationMessageStore(editContext);
+        await Reload();
+        await base.OnParametersSetAsync();
+    }
+
+    void Validate()
+    {
+        validationMessages.Clear();
+        if (string.IsNullOrWhiteSpace(Model.Name))
+            validationMessages.Add(() => Model.Name, "El nombre no debe quedar vacío");
+        if (Model.ProductCategoryFK == default(Guid))
+            validationMessages.Add(() => Model.ProductCategoryFK, "Debes seleccionar una categoría");
+        var formReady = editContext.Validate();
+        if (formReady)
+            OnEditionFinished.InvokeAsync(Model);
+    }
+
+    private async Task Reload()
+    {
+        var result = await Repo.GetAsync<IEnumerable<ProductCategory>>(EndpointProduct.PRODUCT_CATEGORY);
+        if (result.Success)
+            categories = result.Response.ToList();
+    }
+}

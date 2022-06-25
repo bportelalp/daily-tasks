@@ -1,8 +1,26 @@
 ﻿@if (categories is not null)
 {
     <Table TRow="ProductCategory" Items="categories">
-        <TableColumn TRow="ProductCategory" Field="c => c.Name"></TableColumn>
+        <TableColumn TRow="ProductCategory" Field="c => c.Name" Title="Nombre" SortFirst="true"/>
+        <TableColumn TRow="ProductCategory" Field="c => c.Description" Title="Descripción" />
+            <TableColumn TRow="ProductCategory" Field="c => c.Active" Context="Row" Title="Activo">
+            @if (Row.IsActive)
+            {
+                <span class="oi oi-check"></span>
+            }
+            else
+            {
+                <span class="oi oi-x"></span>
+            }
+        </TableColumn>
+        <TableColumn TRow="ProductCategory" Context="Row" Title="Acciones">
+            <button class="btn btm-outline-secondary" @onclick="() => Edition = Row"><span class="oi oi-pencil"></span></button>
+        </TableColumn>
     </Table>
+    @if (Edition is not null)
+    {
+        <ProductCategoryEditor Model="Edition" OnEditionFinished="HandleEditionFinished" />
+    }
 }
 else
 {
@@ -12,18 +30,40 @@ else
 
 @code {
     [Inject] IRepoClient Repo { get; set; }
+    [Inject] BP.Components.Blazor.UI.FrontendUtils.PopUp popUp { get; set; }
 
     private List<ProductCategory> categories { get; set; }
+    private ProductCategory Edition { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            var result = await Repo.GetAsync<IEnumerable<ProductCategory>>(EndpointProduct.PRODUCT_CATEGORY);
-            if (result.Success)
-                categories = result.Response.ToList();
-            await InvokeAsync(StateHasChanged);
+            Reload();
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task Reload()
+    {
+        var result = await Repo.GetAsync<IEnumerable<ProductCategory>>(EndpointProduct.PRODUCT_CATEGORY);
+        if (result.Success)
+            categories = result.Response.ToList();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async void HandleEditionFinished(ProductCategory productCategory)
+    {
+        var result = await Repo.PutAsync<ProductCategory>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
+        if (result.Success)
+        {
+            await popUp.ShowSucess("Actualizado correctamente");
+            Edition = null;
+            Reload();
+        }
+        else
+        {
+            await popUp.ShowError("No se pudo actualizar");
+        }
     }
 }

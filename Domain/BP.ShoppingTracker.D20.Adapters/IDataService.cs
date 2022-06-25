@@ -47,6 +47,7 @@ namespace BP.ShoppingTracker.D20.Adapters
         #endregion
 
         #region UPDATE
+        Task<ProductCategory> UpdateProductCategory(ProductCategory productCategory);
         Task<IEnumerable<ProductType>> UpdateProductTypes(IEnumerable<ProductType> productType);
         Task<Tuple<Guid, Guid>> UpdateFormatCombination(Guid mainFormatId, Guid derivedFormatId, bool active = true);
         #endregion
