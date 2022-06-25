@@ -51,6 +51,11 @@ namespace BP.ShoppingTracker.I31.DataService
                     type.Children = mapper.Repo2Domain(resultDb.Where(child => type.Id == child.ParentFK));
                 result.Add(type);
             }
+            var remove = result.Where(r => r.ParentFK != null).ToList();
+            foreach (var item in remove)
+            {
+                result.Remove(item);
+            }
 
             //Fill optional fields
             if (includeCategory)

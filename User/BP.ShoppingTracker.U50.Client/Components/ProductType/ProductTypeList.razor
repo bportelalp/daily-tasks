@@ -1,12 +1,18 @@
 ﻿@if (productTypes is not null)
 {
-    <Table TRow="ProductType" Data="productTypes">
-        <TableColumn TRow="ProductType" Expression="p => p.Name" Title="Nombre" />
-        <TableColumn TRow="ProductType" Expression="p => p.Description" Title="Descripción" />
-        <TableColumn TRow="ProductType" Expression="p => p.ProductCategory.Name" Title="Categoría"/>
+    <Table TRow="ProductType" Items="productTypes">
+        <TableColumn TRow="ProductType" Field="p => p.Name" Title="Nombre" SortFirst="true" />
+        <TableColumn TRow="ProductType" Field="p => p.Description" Title="Descripción" />
+        <TableColumn TRow="ProductType" Field="p => p.ProductCategory.Name" Title="Categoría" />
+        <TableCollapsibleRow TRow="ProductType" Context="Row" Expandable="r => r.HasChildren">
+            <Table TRow="ProductType" Items="Row.Children">
+                <TableColumn TRow="ProductType" Field="p => p.Name" Title="Nombre" SortFirst="true" />
+                <TableColumn TRow="ProductType" Field="p => p.Description" Title="Descripción" />
+                <TableColumn TRow="ProductType" Field="p => p.ProductCategory.Name" Title="Categoría" />
+            </Table>
+        </TableCollapsibleRow>
     </Table>
 }
-
 
 @code {
     [Inject] IRepoClient Repo { get; set; }
@@ -15,7 +21,8 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        var response = await Repo.GetAsync<IEnumerable<ProductType>>(EndpointProduct.PRODUCT_TYPE);
+        var query = Repo.BuildQuery(EndpointProduct.PRODUCT_TYPE, "returnHierarchy", "true");
+        var response = await Repo.GetAsync<IEnumerable<ProductType>>(query);
         if (response.Success)
             productTypes = response.Response;
         await base.OnParametersSetAsync();

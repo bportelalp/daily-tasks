@@ -46,9 +46,8 @@ namespace BP.ShoppingTracker.IoC.Server
                 case "PostgreSQL": builder.UseNpgsql(connection); break;
                 default: throw new PlatformNotSupportedException($"The database provider is not supported: {databaseProvider}");
             }
-            //bool enableDataLogging = configuration.GetValue<bool>("EnableEFCoreDataLogging");
-            //if (enableDataLogging)
-            //    builder.EnableSensitiveDataLogging();
+            bool enableDataLogging = configuration.GetValue<bool>("EnableEFCoreDataLogging");
+            builder.EnableSensitiveDataLogging(enableDataLogging);
         }
     }
 }
