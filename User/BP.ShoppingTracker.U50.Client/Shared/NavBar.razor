@@ -1,0 +1,53 @@
+﻿<header class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+    <nav class="container-xxl navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="resources/images/cart-icon.png" alt="" width="30" height="20" class="d-inline-block align-text-top" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Home
+                        </NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="catalog">
+                            <span class="oi oi-plus" aria-hidden="true"></span> Catálogo
+                        </NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="tendency">
+                            <span class="oi oi-plus" aria-hidden="true"></span> Tendencia
+                        </NavLink>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <AuthorizeView>
+                        <Authorized>
+                            <li><span>Hola, @context.User.Identity.Name</span></li>
+                            <li><a href="Logout" class="nav-link btn btn-link">Cerrar sesión</a></li>
+                        </Authorized>
+                        <NotAuthorized>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="signin">
+                                    Registrarse
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="login">
+                                    <span class="oi oi-account-login" aria-hidden="true"></span> Iniciar sesión
+                                </NavLink>
+                            </li>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</header>

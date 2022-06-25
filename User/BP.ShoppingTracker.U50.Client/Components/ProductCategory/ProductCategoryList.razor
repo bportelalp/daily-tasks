@@ -1,0 +1,29 @@
+﻿@if (categories is not null)
+{
+    <Table TRow="ProductCategory" Items="categories">
+        <TableColumn TRow="ProductCategory" Field="c => c.Name"></TableColumn>
+    </Table>
+}
+else
+{
+    <Loader />
+}
+
+
+@code {
+    [Inject] IRepoClient Repo { get; set; }
+
+    private List<ProductCategory> categories { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var result = await Repo.GetAsync<IEnumerable<ProductCategory>>(EndpointProduct.PRODUCT_CATEGORY);
+            if (result.Success)
+                categories = result.Response.ToList();
+            await InvokeAsync(StateHasChanged);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

@@ -1,18 +1,37 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
-        <div class="top-row px-4">
-            <BP.ShoppingTracker.U50.Client.Auth.LoginSection/>
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+        <NavBar />
 
-        <article class="content px-4">
-            @Body
+        <article class="container-xxl content">
+            <div class="row">
+                @if (IsCatalogUri)
+                {
+                    <div class="col-12 col-md-2 pe-2">
+                        <BP.ShoppingTracker.U50.Client.Pages.Sidebars.CatalogSidebar />
+                    </div>
+                }
+                <div class="col-12 col-md-10">
+                    @Body
+                </div>
+            </div>
+
         </article>
     </main>
 </div>
+@code {
+    [Inject] public NavigationManager navManager { get; set; }
+
+    private string uri = string.Empty;
+    private string baseUri = string.Empty;
+    private bool IsCatalogUri;
+    protected override void OnParametersSet()
+    {
+        var baseUri = navManager.BaseUri;
+        var uri = navManager.Uri;
+        IsCatalogUri = uri.StartsWith(baseUri + "catalog");
+        base.OnParametersSet();
+        StateHasChanged();
+    }
+}
