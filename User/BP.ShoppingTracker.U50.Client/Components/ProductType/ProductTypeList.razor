@@ -1,31 +1,130 @@
 ﻿@if (productTypes is not null)
 {
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-outline-primary" @onclick="() => Edition = new()">Crear nuevo</button>
+        </div>
+    </div>
+    @if (Edition is not null)
+    {
+        <ProductTypeEditor Model="Edition" OnEditionFinished="HandleEditionFinished" />
+    }
     <Table TRow="ProductType" Items="productTypes">
         <TableColumn TRow="ProductType" Field="p => p.Name" Title="Nombre" SortFirst="true" />
         <TableColumn TRow="ProductType" Field="p => p.Description" Title="Descripción" />
         <TableColumn TRow="ProductType" Field="p => p.ProductCategory.Name" Title="Categoría" />
+        <TableColumn TRow="ProductType" Field="p => p.ProductCategory.Name" Title="Categoría" />
+        <TableColumn TRow="ProductType" Field="c => c.Active" Context="Row" Title="Activo">
+            @if (Row.IsActive)
+            {
+                <span class="oi oi-check"></span>
+            }
+            else
+            {
+                <span class="oi oi-x"></span>
+            }
+        </TableColumn>
+        <TableColumn TRow="ProductType" Context="Row" Title="Acciones">
+            <button class="btn btm-outline-secondary" @onclick="() => Edition = Row"><span class="oi oi-pencil"></span></button>
+            <button class="btn" @onclick="() => HandleDelete(Row)"><span class="oi oi-x"></span></button>
+        </TableColumn>
         <TableCollapsibleRow TRow="ProductType" Context="Row" Expandable="r => r.HasChildren">
             <Table TRow="ProductType" Items="Row.Children">
                 <TableColumn TRow="ProductType" Field="p => p.Name" Title="Nombre" SortFirst="true" />
                 <TableColumn TRow="ProductType" Field="p => p.Description" Title="Descripción" />
                 <TableColumn TRow="ProductType" Field="p => p.ProductCategory.Name" Title="Categoría" />
+                <TableColumn TRow="ProductType" Field="c => c.Active" Context="Row2" Title="Activo">
+                    @if (Row2.IsActive)
+                    {
+                        <span class="oi oi-check"></span>
+                    }
+                    else
+                    {
+                        <span class="oi oi-x"></span>
+                    }
+                </TableColumn>
+                <TableColumn TRow="ProductType" Context="Row2" Title="Acciones">
+                    <button class="btn btm-outline-secondary" @onclick="() => Edition = Row2"><span class="oi oi-pencil"></span></button>
+                    <button class="btn" @onclick="() => HandleDelete(Row2)"><span class="oi oi-x"></span></button>
+                </TableColumn>
             </Table>
         </TableCollapsibleRow>
     </Table>
-    <ProductTypeEditor/>
+
+}
+else
+{
+    <Loader />
 }
 
 @code {
     [Inject] IRepoClient Repo { get; set; }
+    [Inject] NotificationService Popup { get; set; }
 
     private IEnumerable<ProductType> productTypes;
+    private ProductType Edition = null;
 
-    protected override async Task OnParametersSetAsync()
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Reload();
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task Reload()
     {
         var query = Repo.BuildQuery(EndpointProduct.PRODUCT_TYPE, "returnHierarchy", "true");
         var response = await Repo.GetAsync<IEnumerable<ProductType>>(query);
         if (response.Success)
             productTypes = response.Response;
-        await base.OnParametersSetAsync();
+        else
+        {
+            await Popup.ShowError("No se ha podido cargar los tipos de productos");
+            productTypes = Enumerable.Empty<ProductType>();
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleEditionFinished(ProductType productType)
+    {
+        if (productType is null)
+        {
+            Edition = null;
+            return;
+        }
+        var result = new RepoResponse<object>();
+        if (productType.Id == default(Guid))
+        {
+            productType.Id = Guid.NewGuid();
+            result = await Repo.PostAsync<ProductType>(EndpointProduct.PRODUCT_TYPE, productType);
+        }
+        else
+            result = await Repo.PutAsync<ProductType>(EndpointProduct.PRODUCT_TYPE, productType);
+        if (result.Success)
+        {
+            await Popup.ShowSucess("Actualizado correctamente");
+            Edition = null;
+            await Reload();
+        }
+        else
+        {
+            await Popup.ShowError("No se pudo actualizar");
+        }
+    }
+
+    private async void HandleDelete(ProductType productType)
+    {
+        var confirm = await Popup.ShowPrompt($"¿De verdad desea eliminar la categoría {productType.Name}?", "Sí, eliminar.", "No");
+        if (confirm)
+        {
+            var result = await Repo.DeleteAsync<ProductType>(EndpointProduct.PRODUCT_TYPE, productType);
+            if (result.Success)
+                await Popup.ShowSucess("Eliminado!");
+            else
+                await Popup.ShowError($"Ups! No se pudo eliminar: {await result.ReadAsStringAsync()}");
+        }
+        await Reload();
     }
 }

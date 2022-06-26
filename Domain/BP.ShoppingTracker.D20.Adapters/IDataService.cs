@@ -33,7 +33,7 @@ namespace BP.ShoppingTracker.D20.Adapters
         Task<IEnumerable<ProductCategory>> ReadProductCategories();
         Task<ProductType> ReadProductType(Guid id, bool includeParent = false, bool includeChildren = false);
         Task<IEnumerable<ProductType>> ReadProductTypes(bool includeCategory = true);
-        Task<IEnumerable<ProductType>> ReadProductTypes(string searchName, bool includeCategory = true, bool returnHierarchy = false);
+        Task<IEnumerable<ProductType>> ReadProductTypes(string searchName, bool includeCategory = true, bool returnHierarchy = false, bool onlyRootLevel = false);
         Task<IEnumerable<MeasureType>> ReadMeasureTypes();
         Task<IEnumerable<FormatType>> ReadFormatTypes(string SearchName = "");
         Task<Format> ReadFormat(Guid id, Guid id2 = default(Guid));
@@ -48,12 +48,14 @@ namespace BP.ShoppingTracker.D20.Adapters
 
         #region UPDATE
         Task<ProductCategory> UpdateProductCategory(ProductCategory productCategory);
+        Task<ProductType> UpdateProductType(ProductType productType);
         Task<IEnumerable<ProductType>> UpdateProductTypes(IEnumerable<ProductType> productType);
         Task<Tuple<Guid, Guid>> UpdateFormatCombination(Guid mainFormatId, Guid derivedFormatId, bool active = true);
         #endregion
 
         #region DELETE
-
+        Task DeleteProductCategory(ProductCategory productCategory);
+        Task DeleteProductType(ProductType productType);
         #endregion
     }
 }

@@ -22,11 +22,12 @@
     </div>
 
     <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    <button type="reset" class="btn btn-outline-danger" @onclick="() => OnEditionFinished.InvokeAsync(null)">Descartar</button>
 </EditForm>
 
 @code {
     [Parameter] public ProductCategory Model { get; set; }
-    [Parameter] public EventCallback<ProductCategory> OnEditionFinished{ get; set; }
+    [Parameter] public EventCallback<ProductCategory> OnEditionFinished { get; set; }
 
     private bool active { get; set; }
     private EditContext editContext;

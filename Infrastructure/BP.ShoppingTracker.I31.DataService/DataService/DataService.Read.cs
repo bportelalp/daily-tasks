@@ -32,13 +32,15 @@ namespace BP.ShoppingTracker.I31.DataService
             return returned;
         }
         public async Task<IEnumerable<ProductType>> ReadProductTypes(bool includeCategory = true) => await this.ReadProductTypes(string.Empty, includeCategory);
-        public async Task<IEnumerable<ProductType>> ReadProductTypes(string searchName, bool includeCategory = true, bool returnHierarchy = false)
+        public async Task<IEnumerable<ProductType>> ReadProductTypes(string searchName, bool includeCategory = true, bool returnHierarchy = false, bool onlyRootLevel = false)
         {
             List<ProductType> result = new List<ProductType>();
             var query = dbContext.ProductTypes.AsNoTracking();
             if (!string.IsNullOrWhiteSpace(searchName))
                 query = query.Where(pt => searchName.ToUpperInvariant().Contains(pt.Name.ToUpperInvariant()));
-            if (returnHierarchy)
+            if (onlyRootLevel)
+                query = query.Where(pt => pt.ParentFK == null);
+            if (returnHierarchy && !onlyRootLevel)
                 query = query.Include(pt => pt.InverseParentFKNavigation);
 
             //Fill 
@@ -51,11 +53,13 @@ namespace BP.ShoppingTracker.I31.DataService
                     type.Children = mapper.Repo2Domain(resultDb.Where(child => type.Id == child.ParentFK));
                 result.Add(type);
             }
-            var remove = result.Where(r => r.ParentFK != null).ToList();
-            foreach (var item in remove)
+            if (returnHierarchy)
             {
-                result.Remove(item);
+                var remove = result.Where(r => r.ParentFK != null).ToList();
+                foreach (var item in remove)
+                    result.Remove(item);
             }
+
 
             //Fill optional fields
             if (includeCategory)
@@ -172,7 +176,7 @@ namespace BP.ShoppingTracker.I31.DataService
             foreach (var brandDB in result)
             {
                 var brand = mapper.Repo2Domain(brandDB);
-                if(includeCompany)
+                if (includeCompany)
                     brand.Company = mapper.Repo2Domain(brandDB.CompanyFKNavigation);
                 brands.Add(brand);
             }

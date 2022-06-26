@@ -17,6 +17,13 @@ namespace BP.ShoppingTracker.I31.DataService
             await dbContext.SaveChangesAsync();
             return mapper.Repo2Domain(entity);
         }
+        public async Task<ProductType> UpdateProductType(ProductType productType)
+        {
+            var entity = mapper.Domain2Repo(productType);
+            dbContext.Update(entity);
+            await dbContext.SaveChangesAsync();
+            return mapper.Repo2Domain(entity);
+        }
 
         public async Task<IEnumerable<ProductType>> UpdateProductTypes(IEnumerable<ProductType> productType)
         {

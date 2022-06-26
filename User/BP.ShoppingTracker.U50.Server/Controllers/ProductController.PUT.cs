@@ -35,5 +35,20 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
                 throw;
             }
         }
+
+        [HttpPut("product-type")]
+        public async Task<IActionResult> PutProductType([FromBody] ProductType productType)
+        {
+            try
+            {
+                var result = await dataService.UpdateProductType(productType);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return this.ManageException(ex);
+                throw;
+            }
+        }
     }
 }

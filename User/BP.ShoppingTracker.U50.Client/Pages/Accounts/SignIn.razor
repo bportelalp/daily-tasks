@@ -29,7 +29,7 @@
     [Inject] IRepoClient repo { get; set; }
     [Inject] NavigationManager navManager { get; set; }
     [Inject] ILoginService loginService { get; set; }
-    [Inject] BP.Components.Blazor.UI.FrontendUtils.PopUp popUp { get; set; }
+    [Inject] BP.Components.Blazor.UI.FrontendUtils.NotificationService popUp { get; set; }
 
     private UserInfoDTO userInfo { get; set; } = new UserInfoDTO();
 

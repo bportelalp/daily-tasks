@@ -27,6 +27,19 @@
         </div>
     </div>
     <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Familia</div>
+        <div class="col-sm-10">
+            <InputSelect class="form-control" @bind-Value="Model.ParentFK">
+                <option value="@(default(Guid))"></option>
+                @foreach (var cat in productTypesParent)
+                {
+                    <option value="@cat.Id">@cat.Name</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="() => Model.ParentFK" />
+        </div>
+    </div>
+    <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">Activo</div>
         <div class="col-sm-10">
             <InputCheckbox class="custom-checkbox" @bind-Value="Model.IsActive" />
@@ -35,6 +48,7 @@
     </div>
 
     <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    <button type="reset" class="btn btn-outline-danger" @onclick="() => OnEditionFinished.InvokeAsync(null)">Descartar</button>
 </EditForm>
 
 @code {
@@ -46,6 +60,7 @@
     private EditContext editContext;
     private ValidationMessageStore validationMessages;
     private List<ProductCategory> categories = new();
+    private List<ProductType> productTypesParent = new();
 
     protected override async Task OnParametersSetAsync()
     {
@@ -54,8 +69,17 @@
 
         editContext = new EditContext(Model);
         validationMessages = new ValidationMessageStore(editContext);
-        await Reload();
         await base.OnParametersSetAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Reload();
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     void Validate()
@@ -65,6 +89,8 @@
             validationMessages.Add(() => Model.Name, "El nombre no debe quedar vacío");
         if (Model.ProductCategoryFK == default(Guid))
             validationMessages.Add(() => Model.ProductCategoryFK, "Debes seleccionar una categoría");
+        if (Model.ParentFK == default(Guid))
+            Model.ParentFK = null;
         var formReady = editContext.Validate();
         if (formReady)
             OnEditionFinished.InvokeAsync(Model);
@@ -72,8 +98,12 @@
 
     private async Task Reload()
     {
-        var result = await Repo.GetAsync<IEnumerable<ProductCategory>>(EndpointProduct.PRODUCT_CATEGORY);
-        if (result.Success)
-            categories = result.Response.ToList();
+        var first = await Repo.GetAsync<IEnumerable<ProductCategory>>(EndpointProduct.PRODUCT_CATEGORY);
+        if (first.Success)
+            categories = first.Response.ToList();
+        var query = Repo.BuildQuery(EndpointProduct.PRODUCT_TYPE, "onlyFirstLevel", true);
+        var second = await Repo.GetAsync<IEnumerable<ProductType>>(query);
+        if (second.Success)
+            productTypesParent = second.Response.ToList();
     }
 }

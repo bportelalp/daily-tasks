@@ -1,9 +1,14 @@
 ﻿@if (categories is not null)
 {
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-outline-primary" @onclick="() => Edition = new()">Crear nuevo</button>
+        </div>
+    </div>
     <Table TRow="ProductCategory" Items="categories">
-        <TableColumn TRow="ProductCategory" Field="c => c.Name" Title="Nombre" SortFirst="true"/>
+        <TableColumn TRow="ProductCategory" Field="c => c.Name" Title="Nombre" SortFirst="true" />
         <TableColumn TRow="ProductCategory" Field="c => c.Description" Title="Descripción" />
-            <TableColumn TRow="ProductCategory" Field="c => c.Active" Context="Row" Title="Activo">
+        <TableColumn TRow="ProductCategory" Field="c => c.Active" Context="Row" Title="Activo">
             @if (Row.IsActive)
             {
                 <span class="oi oi-check"></span>
@@ -14,7 +19,8 @@
             }
         </TableColumn>
         <TableColumn TRow="ProductCategory" Context="Row" Title="Acciones">
-            <button class="btn btm-outline-secondary" @onclick="() => Edition = Row"><span class="oi oi-pencil"></span></button>
+            <button class="btn" @onclick="() => Edition = Row"><span class="oi oi-pencil"></span></button>
+            <button class="btn" @onclick="() => HandleDelete(Row)"><span class="oi oi-x"></span></button>
         </TableColumn>
     </Table>
     @if (Edition is not null)
@@ -30,7 +36,7 @@ else
 
 @code {
     [Inject] IRepoClient Repo { get; set; }
-    [Inject] BP.Components.Blazor.UI.FrontendUtils.PopUp popUp { get; set; }
+    [Inject] BP.Components.Blazor.UI.FrontendUtils.NotificationService Popup { get; set; }
 
     private List<ProductCategory> categories { get; set; }
     private ProductCategory Edition { get; set; }
@@ -54,16 +60,42 @@ else
 
     private async void HandleEditionFinished(ProductCategory productCategory)
     {
-        var result = await Repo.PutAsync<ProductCategory>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
+        if (productCategory is null)
+        {
+            Edition = null;
+            return;
+        }
+        var result = new RepoResponse<object>();
+        if (productCategory.Id == default(Guid))
+        {
+            productCategory.Id = Guid.NewGuid();
+            result = await Repo.PostAsync<ProductCategory>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
+        }
+        else
+            result = await Repo.PutAsync<ProductCategory>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
         if (result.Success)
         {
-            await popUp.ShowSucess("Actualizado correctamente");
+            await Popup.ShowSucess("Actualizado correctamente");
             Edition = null;
             Reload();
         }
         else
         {
-            await popUp.ShowError("No se pudo actualizar");
+            await Popup.ShowError("No se pudo actualizar");
         }
+    }
+
+    private async void HandleDelete(ProductCategory productCategory)
+    {
+        var confirm = await Popup.ShowPrompt($"¿De verdad desea eliminar la categoría {productCategory.Name}?", "Sí, eliminar.", "No");
+        if (confirm)
+        {
+            var result = await Repo.DeleteAsync<ProductCategory>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
+            if (result.Success)
+                await Popup.ShowSucess("Eliminado!");
+            else
+                await Popup.ShowError($"Ups! No se pudo eliminar: {await result.ReadAsStringAsync()}");
+        }
+        await Reload();
     }
 }

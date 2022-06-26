@@ -15,20 +15,15 @@ Welcome to your new app.
     </Authorized>
 </AuthorizeView>
 
-<BP.ShoppingTracker.U50.Client.Components.ProductType.ProductTypeList />
 
 <button class="btn btn-outline-primary" @onclick="Pedir">Pedir</button>
 
 @code {
     [Inject] public IRepoClient Repo { get; set; }
+    [Inject] public NotificationService Popup { get; set; }
 
     public async void Pedir()
     {
-        var query = Repo.BuildQuery(EndpointProduct.PRODUCT_TYPE, "includeCategory", true, "returnhierarchy", true);
-        var response = await Repo.GetAsync<List<ProductType>>(query);
-        if(response.Response is not null)
-        {
-            
-        }
+        await Popup.ShowPrompt("Confirmar");
     }
 }
