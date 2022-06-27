@@ -1,0 +1,132 @@
+﻿@if (companies is not null)
+{
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-outline-primary" @onclick="() => Edition = new()">Crear nuevo</button>
+        </div>
+    </div>
+    <Table TRow="Company" Items="companies">
+        <TableColumn TRow="Company" Field="c => c.Name" Title="Nombre" SortFirst="true" />
+        <TableColumn TRow="Company" Field="c => c.Description" Title="Descripción" />
+        <TableColumn TRow="Company" Context="Row" Title="Acciones">
+            <button class="btn" @onclick="() => Edition = Row"><span class="oi oi-pencil"></span></button>
+            <button class="btn" @onclick="() => Edition = Row"><span class="oi oi-pencil"></span></button>
+            <button class="btn" @onclick="() => HandleDelete(Row)"><span class="oi oi-x"></span></button>
+        </TableColumn>
+        <TableCollapsibleRow TRow="Company" Context="company">
+            <Table TRow="Brand" Items="company.Brands">
+                <TableColumn TRow="Brand" Field="c => c.Name" Title="Nombre" SortFirst="true"/>
+                <TableColumn TRow="Brand" Field="c => c.Description" Title="Descripción"/>
+                <TableColumn TRow="Brand" Field="c => c.Active" Title="Activo"/>
+            </Table>
+        </TableCollapsibleRow>
+    </Table>
+    @if (Edition is not null)
+    {
+        <CompanyEditor Model="Edition" OnEditionFinished="HandleEditionFinished"/>
+    }
+    @if(EditionBrand is not null)
+    {
+        
+    }
+}
+else
+{
+    <Loader />
+}
+
+
+@code {
+    [Inject] IRepoClient Repo { get; set; }
+    [Inject] BP.Components.Blazor.UI.FrontendUtils.NotificationService Popup { get; set; }
+
+    private List<Company> companies { get; set; }
+    private Company Edition { get; set; }
+    private Brand EditionBrand { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Reload();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task Reload()
+    {
+        var query = Repo.BuildQuery(EndpointProduct.COMPANY, "includeBrands", true);
+        var result = await Repo.GetAsync<IEnumerable<Company>>(query);
+        if (result.Success)
+            companies = result.Response.ToList();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async void HandleEditionFinished(Company company)
+    {
+        if (company is null)
+        {
+            Edition = null;
+            return;
+        }
+        var result = new RepoResponse<object>();
+        if (company.Id == default(Guid))
+        {
+            company.Id = Guid.NewGuid();
+            result = await Repo.PostAsync<Company>(EndpointProduct.COMPANY, company);
+        }
+        else
+            result = await Repo.PutAsync<Company>(EndpointProduct.COMPANY, company);
+        if (result.Success)
+        {
+            await Popup.ShowSucess("Actualizado correctamente");
+            Edition = null;
+            Reload();
+        }
+        else
+        {
+            await Popup.ShowError("No se pudo actualizar");
+        }
+    }
+
+    private async void HandleEditionBrandFinished(Brand brand)
+    {
+        if (brand is null)
+        {
+            Edition = null;
+            return;
+        }
+        var result = new RepoResponse<object>();
+        if (brand.Id == default(Guid))
+        {
+            brand.Id = Guid.NewGuid();
+            result = await Repo.PostAsync<Brand>(EndpointProduct.BRAND, brand);
+        }
+        else
+            result = await Repo.PutAsync<Brand>(EndpointProduct.BRAND, brand);
+        if (result.Success)
+        {
+            await Popup.ShowSucess("Actualizado correctamente");
+            Edition = null;
+            Reload();
+        }
+        else
+        {
+            await Popup.ShowError("No se pudo actualizar");
+        }
+    }
+
+    private async void HandleDelete(Company company)
+    {
+        var confirm = await Popup.ShowPrompt($"¿De verdad desea eliminar la categoría {company.Name}?", "Sí, eliminar.", "No");
+        if (confirm)
+        {
+            var result = await Repo.DeleteAsync<Company>(EndpointProduct.COMPANY, company);
+            if (result.Success)
+                await Popup.ShowSucess("Eliminado!");
+            else
+                await Popup.ShowError($"Ups! No se pudo eliminar: {await result.ReadAsStringAsync()}");
+        }
+        await Reload();
+    }
+}

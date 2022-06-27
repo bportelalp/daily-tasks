@@ -9,6 +9,7 @@
         public static readonly string FORMAT_TYPE = ENDPOINT_PRODUCT + "/format-type";
         public static readonly string FORMAT = ENDPOINT_PRODUCT + "/format";
         public static readonly string COMPANY = ENDPOINT_PRODUCT + "/company";
+        public static readonly string BRAND = ENDPOINT_PRODUCT + "/brand";
     }
 
     public struct EndpointAccounts

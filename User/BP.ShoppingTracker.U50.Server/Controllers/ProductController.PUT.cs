@@ -26,7 +26,7 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
         {
             try
             {
-                var result = await dataService.UpdateProductCategory(productCategory);
+                var result = await dataService.UpdateAsync(productCategory);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -41,13 +41,27 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
         {
             try
             {
-                var result = await dataService.UpdateProductType(productType);
+                var result = await dataService.UpdateAsync(productType);
                 return Ok(result);
             }
             catch (Exception ex)
             {
                 return this.ManageException(ex);
                 throw;
+            }
+        }
+
+        [HttpPut("company")]
+        public async Task<IActionResult> Putcompany([FromBody] BP.ShoppingTracker.D10.Models.Products.Company company)
+        {
+            try
+            {
+                await dataService.UpdateAsync(company);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return this.ManageException(ex);
             }
         }
     }

@@ -47,15 +47,19 @@ namespace BP.ShoppingTracker.D20.Adapters
         #endregion
 
         #region UPDATE
-        Task<ProductCategory> UpdateProductCategory(ProductCategory productCategory);
-        Task<ProductType> UpdateProductType(ProductType productType);
-        Task<IEnumerable<ProductType>> UpdateProductTypes(IEnumerable<ProductType> productType);
+        Task<ProductCategory> UpdateAsync(ProductCategory productCategory);
+        Task<ProductType> UpdateAsync(ProductType productType);
+        Task<Company> UpdateAsync(Company company);
+        Task<Brand> UpdateAsync(Brand brand);
+        Task<IEnumerable<ProductType>> UpdateAsync(IEnumerable<ProductType> productType);
         Task<Tuple<Guid, Guid>> UpdateFormatCombination(Guid mainFormatId, Guid derivedFormatId, bool active = true);
         #endregion
 
         #region DELETE
-        Task DeleteProductCategory(ProductCategory productCategory);
-        Task DeleteProductType(ProductType productType);
+        Task DeleteAsync(ProductCategory productCategory);
+        Task DeleteAsync(ProductType productType);
+        Task DeleteAsync(Company company);
+        Task DeleteAsync(Brand brand);
         #endregion
     }
 }

@@ -34,6 +34,20 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
         }
 
+        [HttpPost("company")]
+        public async Task<IActionResult> Postcompany([FromBody] BP.ShoppingTracker.D10.Models.Products.Company company)
+        {
+            try
+            {
+                await dataService.CreateAsync(company);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return this.ManageException(ex);
+            }
+        }
+
         [HttpPost("format")]
         public async Task<IActionResult> PostFormat([FromBody] Format format, [FromQuery] bool updateMain = true, [FromQuery] bool updateDerived = false)
         {

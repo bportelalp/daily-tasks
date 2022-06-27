@@ -11,7 +11,7 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
         {
             try
             {
-                await dataService.DeleteProductCategory(productCategory);
+                await dataService.DeleteAsync(productCategory);
                 return NoContent();
             }
             catch (Exception ex)
@@ -25,7 +25,7 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
         {
             try
             {
-                await dataService.DeleteProductType(productType);
+                await dataService.DeleteAsync(productType);
                 return NoContent();
             }
             catch (Exception ex)

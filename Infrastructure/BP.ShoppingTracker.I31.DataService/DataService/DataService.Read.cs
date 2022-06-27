@@ -148,6 +148,7 @@ namespace BP.ShoppingTracker.I31.DataService
                 var company = mapper.Repo2Domain(companyDb);
                 if (includeBrands)
                     company.Brands = mapper.Repo2Domain(companyDb.Brands);
+                companies.Add(company);
             }
             return companies;
         }

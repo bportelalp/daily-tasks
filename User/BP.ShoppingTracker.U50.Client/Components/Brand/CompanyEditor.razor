@@ -1,0 +1,47 @@
+﻿<EditForm EditContext="editContext" OnSubmit="Validate">
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Nombre</div>
+        <div class="col-sm-10">
+            <InputText class="form-control" @bind-Value="Model.Name" />
+            <ValidationMessage For="() => Model.Name" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Descipción</div>
+        <div class="col-sm-10">
+            <InputText class="form-control" @bind-Value="Model.Description" />
+            <ValidationMessage For="() => Model.Description" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    <button type="reset" class="btn btn-outline-danger" @onclick="() => OnEditionFinished.InvokeAsync(null)">Descartar</button>
+</EditForm>
+
+@code {
+    [Parameter] public Company Model { get; set; }
+    [Parameter] public EventCallback<Company> OnEditionFinished { get; set; }
+
+    private bool active { get; set; }
+    private EditContext editContext;
+    private ValidationMessageStore validationMessages { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (Model is null)
+            Model = new();
+        editContext = new EditContext(Model);
+        validationMessages = new ValidationMessageStore(editContext);
+        return base.OnParametersSetAsync();
+    }
+
+    void Validate()
+    {
+        validationMessages.Clear();
+        if (string.IsNullOrWhiteSpace(Model.Name))
+            validationMessages.Add(() => Model.Name, "El nombre no debe quedar vacío");
+        var formReady = editContext.Validate();
+        if (formReady)
+            OnEditionFinished.InvokeAsync(Model);
+    }
+}

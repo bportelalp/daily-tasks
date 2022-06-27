@@ -10,14 +10,14 @@ namespace BP.ShoppingTracker.I31.DataService
 {
     public partial class DataService : IDataService
     {
-        public async Task<ProductCategory> UpdateProductCategory(ProductCategory productCategory)
+        public async Task<ProductCategory> UpdateAsync(ProductCategory productCategory)
         {
             var entity = mapper.Domain2Repo(productCategory);
             dbContext.UpdateRange(entity);
             await dbContext.SaveChangesAsync();
             return mapper.Repo2Domain(entity);
         }
-        public async Task<ProductType> UpdateProductType(ProductType productType)
+        public async Task<ProductType> UpdateAsync(ProductType productType)
         {
             var entity = mapper.Domain2Repo(productType);
             dbContext.Update(entity);
@@ -25,7 +25,23 @@ namespace BP.ShoppingTracker.I31.DataService
             return mapper.Repo2Domain(entity);
         }
 
-        public async Task<IEnumerable<ProductType>> UpdateProductTypes(IEnumerable<ProductType> productType)
+        public async Task<Company> UpdateAsync(Company company)
+        {
+            var entity = mapper.Domain2Repo(company);
+            dbContext.Update(entity);
+            await dbContext.SaveChangesAsync();
+            return mapper.Repo2Domain(entity);
+        }
+
+        public async Task<Brand> UpdateAsync(Brand brand)
+        {
+            var entity = mapper.Domain2Repo(brand);
+            dbContext.Update(entity);
+            await dbContext.SaveChangesAsync();
+            return mapper.Repo2Domain(entity);
+        }
+
+        public async Task<IEnumerable<ProductType>> UpdateAsync(IEnumerable<ProductType> productType)
         {
             var entity = mapper.Domain2Repo(productType);
             dbContext.UpdateRange(entity);
