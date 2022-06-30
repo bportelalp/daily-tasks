@@ -34,8 +34,7 @@ namespace BP.ShoppingTracker.I30.Persistence.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=webserver-vbox;Initial Catalog=ShoppingTracker;Persist Security Info=True;User ID=sa;Password=a123.456");
+                optionsBuilder.UseNpgsql("Host=webserver-vbox;Username=postgres;Password=a123.456;Database=ShoppingTracker");
             }
         }
 
@@ -126,6 +125,14 @@ namespace BP.ShoppingTracker.I30.Persistence.Context
             modelBuilder.Entity<MeasureType>(entity =>
             {
                 entity.Property(e => e.ID).ValueGeneratedNever();
+
+                entity.Property(e => e.IsUnitBase).HasDefaultValue(false);
+
+                entity.HasOne(d => d.UnitBaseFKNavigation)
+                    .WithMany(p => p.UnitsDerived)
+                    .HasForeignKey(d => d.UnitBaseFK)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MeasureType_MeasureType");
             });
 
             modelBuilder.Entity<Product>(entity =>

@@ -54,7 +54,9 @@ namespace BP.ShoppingTracker.I31.DataService.Mapping
                 Name = domain.Name,
                 Description = domain.Description,
                 Unit = domain.Unit,
-                ScaleFactorSI = domain.ScaleFactorSI
+                ScaleFactorSI = domain.ScaleFactorSI,
+                IsUnitBase = domain.IsUnitBase,
+                UnitBaseFK = domain.UnitBaseFK
             };
             return row;
         }

@@ -5,26 +5,26 @@
             <button class="btn btn-outline-primary" @onclick="() => Edition = new()">Crear nuevo</button>
         </div>
     </div>
-   <Table TRow="Format" Items="formats">
+    <Table TRow="Format" Items="formats">
         <TableColumn TRow="Format" Field="c => c.ToString()" Title="Nombre" SortFirst="true" />
         <TableColumn TRow="Format" Field="c => c.IsDerived" Title="Tipo derivado" />
-@*        <TableColumn TRow="Format" Context="Row" Title="Activo">
-            @if (Row.IsActive)
-            {
-                <span class="oi oi-check"></span>
-            }
-            else
-            {
-                <span class="oi oi-x"></span>
-            }
-        </TableColumn>*@
+        @*        <TableColumn TRow="Format" Context="Row" Title="Activo">
+    @if (Row.IsActive)
+    {
+    <span class="oi oi-check"></span>
+    }
+    else
+    {
+    <span class="oi oi-x"></span>
+    }
+    </TableColumn>*@
         <TableColumn TRow="Format" Context="Row" Title="Acciones">
             <button class="btn" @onclick="() => Edition = Row"><span class="oi oi-pencil"></span></button>
         </TableColumn>
     </Table>
     @if (Edition is not null)
     {
-        <FormatEditor Model="Edition"/>
+        <FormatEditor Model="Edition" OnEditionFinished="HandleEditionFinished" />
     }
 }
 else
@@ -57,21 +57,20 @@ else
         await InvokeAsync(StateHasChanged);
     }
 
-    private async void HandleEditionFinished(Format productCategory)
+    private async void HandleEditionFinished(Format format)
     {
-        if (productCategory is null)
+        if (format is null)
         {
             Edition = null;
             return;
         }
         var result = new RepoResponse<object>();
-        if (productCategory.Id == default(Guid))
-        {
-            productCategory.Id = Guid.NewGuid();
-            result = await Repo.PostAsync<Format>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
-        }
-        else
-            result = await Repo.PutAsync<Format>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
+        if (format.Id == default(Guid))
+            format.Id = Guid.NewGuid();
+        if (format.DerivedFormat is not null && format.DerivedFormat.Id == default(Guid))
+            format.DerivedFormat.Id = Guid.NewGuid();
+        var query = Repo.BuildQuery(EndpointProduct.FORMAT, "updateMain", true, "updateDerived", true);
+        result = await Repo.PostAsync<Format>(query, format);
         if (result.Success)
         {
             await Popup.ShowSucess("Actualizado correctamente");

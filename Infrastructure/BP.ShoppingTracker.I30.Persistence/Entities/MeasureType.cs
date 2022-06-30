@@ -24,7 +24,18 @@ namespace BP.ShoppingTracker.I30.Persistence.Entities
         public string Unit { get; set; } = null!;
         public int ScaleFactorSI { get; set; }
 
+        public int? UnitBaseFK { get; set; }
+        public bool IsUnitBase { get; set; }
+
         [InverseProperty("MeasureTypeFKNavigation")]
         public virtual ICollection<Format> Formats { get; set; }
+
+
+        [ForeignKey("UnitBaseFK")]
+        [InverseProperty("UnitsDerived")]
+        public virtual MeasureType? UnitBaseFKNavigation { get; set; }
+
+        [InverseProperty("UnitBaseFKNavigation")]
+        public virtual ICollection<MeasureType> UnitsDerived { get; set; }
     }
 }

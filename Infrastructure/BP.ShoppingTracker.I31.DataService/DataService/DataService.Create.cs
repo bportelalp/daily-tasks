@@ -54,17 +54,19 @@ namespace BP.ShoppingTracker.I31.DataService
             I30.Persistence.Entities.CombinedFormat composed = mapper.Domain2Repo(format.ComposedId);
             I30.Persistence.Entities.Format mainFormat = mapper.Domain2Repo(format);
             I30.Persistence.Entities.Format derivedFormat = mapper.Domain2Repo(format.DerivedFormat);
-            if (updateMainFormat)
+            if (updateMainFormat && mainFormat is not null)
             {
                 if (dbContext.Formats.Any(f => f.ID == mainFormat.ID))
                     dbContext.Entry(mainFormat).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 else
                     dbContext.Add(mainFormat);
             }
-            if (updateDerivedFormat)
+            if (updateDerivedFormat && derivedFormat is not null)
             {
-                if(dbContext.Formats.Any(f => f.ID == derivedFormat.ID))
+                if (dbContext.Formats.Any(f => f.ID == derivedFormat.ID))
                     dbContext.Entry(derivedFormat).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                else
+                    dbContext.Add(derivedFormat);
             }
             dbContext.Add(composed);
             await dbContext.SaveChangesAsync();

@@ -16,12 +16,13 @@ namespace BP.ShoppingTracker.D10.Models.Products
         public FormatType FormatType { get; set; }
         public MeasureType MeasureType { get; set; }
         public Format DerivedFormat { get; set; }
-        public bool IsDerived => DerivedFormat is null;
+        public bool IsDerived => DerivedFormat is not null;
 
         public override string ToString() =>
              ($"{FormatType?.ToString()} de {Value} {MeasureType?.ToString()}") + ((DerivedFormat != null ? $" de {DerivedFormat.ToString()}" : ""));
 
         public Tuple<Guid, Guid> ComposedId => Tuple.Create(Id, DerivedFormat?.Id?? Guid.Empty);
         public static Guid NoDerivedID => Guid.Empty;
+
     }
 }
