@@ -127,7 +127,7 @@ namespace BP.ShoppingTracker.I32.Generator
         {
             using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                using (StreamReader sr = new StreamReader(fs, Encoding.Latin1))
+                using (StreamReader sr = new StreamReader(fs))
                 {
                     var json = sr.ReadToEnd();
                     return JsonConvert.DeserializeObject<ConfigurationFile>(json);

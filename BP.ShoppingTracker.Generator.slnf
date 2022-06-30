@@ -1,0 +1,15 @@
+{
+  "solution": {
+    "path": "BP.ShoppingTracker.sln",
+    "projects": [
+      "BP.ShoppingTracker.IoC.Generator\\BP.ShoppingTracker.IoC.Generator.csproj",
+      "Domain\\BP.ShoppingTracker.D10.Models\\BP.ShoppingTracker.D10.Models.csproj",
+      "Domain\\BP.ShoppingTracker.D20.Adapters\\BP.ShoppingTracker.D20.Adapters.csproj",
+      "Domain\\BP.ShoppingTracker.D20.Models\\BP.ShoppingTracker.D20.Models.csproj",
+      "Infrastructure\\BP.ShoppingTracker.I30.Persistence\\BP.ShoppingTracker.I30.Persistence.csproj",
+      "Infrastructure\\BP.ShoppingTracker.I31.DataService\\BP.ShoppingTracker.I31.DataService.csproj",
+      "Infrastructure\\BP.ShoppingTracker.I32.Generator\\BP.ShoppingTracker.I32.Generator.csproj",
+      "User\\BP.ShoppingTracker.U50.Generator\\BP.ShoppingTracker.U50.Generator.csproj"
+    ]
+  }
+}

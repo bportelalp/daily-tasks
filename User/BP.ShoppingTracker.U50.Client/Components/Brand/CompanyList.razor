@@ -10,10 +10,9 @@
         <TableColumn TRow="Company" Field="c => c.Description" Title="Descripción" />
         <TableColumn TRow="Company" Context="Row" Title="Acciones">
             <button class="btn" @onclick="() => Edition = Row"><span class="oi oi-pencil"></span></button>
-            <button class="btn" @onclick="() => Edition = Row"><span class="oi oi-pencil"></span></button>
             <button class="btn" @onclick="() => HandleDelete(Row)"><span class="oi oi-x"></span></button>
         </TableColumn>
-        <TableCollapsibleRow TRow="Company" Context="company">
+        <TableCollapsibleRow TRow="Company" Expandable="c => c.Brands?.Any()??false" Context="company">
             <Table TRow="Brand" Items="company.Brands">
                 <TableColumn TRow="Brand" Field="c => c.Name" Title="Nombre" SortFirst="true"/>
                 <TableColumn TRow="Brand" Field="c => c.Description" Title="Descripción"/>
