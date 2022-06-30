@@ -1,0 +1,164 @@
+﻿<EditForm EditContext="editContext" OnSubmit="Validate">
+    <div class="row">
+        <div class="col-6">
+            <div class="card p-1">
+                <div class="mb-3 row">
+                    <div class="col-sm-3 col-form-label">Formato</div>
+                    <div class="col-sm-9">
+                        <InputSelect TValue="Guid" class="form-control" ValueExpression="() => Model.FormatTypeFK" ValueChanged="(fk) => ManageChangeFormatType(fk, Model)">
+                            <option value="@(default(Guid))"></option>
+                            @foreach (var ft in formatTypes)
+                            {
+                                <option value="@ft.Id">@ft.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="() => Model.FormatTypeFK" />
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-3 col-form-label">Medida</div>
+                    <div class="col-sm-9">
+                        <InputSelect TValue="int" class="form-control" ValueExpression="() => Model.MeasureTypeFK" ValueChanged="(fk) => ManageChangeMeasure(fk, Model)">
+                            <option value="@(default(int))"></option>
+                            @foreach (var ft in measureTypes)
+                            {
+                                <option value="@ft.Id">@ft.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="() => Model.MeasureTypeFK" />
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-3 col-form-label">Valor</div>
+                    <div class="col-sm-9">
+                        <InputNumber class="form-control" @bind-Value="Model.Value" />
+                        <ValidationMessage For="() => Model.Value" />
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-3 col-form-label">Formato</div>
+                    <div class="col-sm-9">@Model.ToString()</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card p-1">
+                <div class="mb-3 row">
+                    <div class="col-sm-3 col-form-label">Formato</div>
+                    <div class="col-sm-9">
+                        <InputSelect TValue="Guid" class="form-control" ValueExpression="() => DerivedModel.FormatTypeFK" ValueChanged="(fk) => ManageChangeFormatType(fk, DerivedModel)">
+                            <option value="@(default(Guid))"></option>
+                            @foreach (var ft in formatTypes)
+                            {
+                                <option value="@ft.Id">@ft.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="() => DerivedModel.FormatTypeFK" />
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-3 col-form-label">Medida</div>
+                    <div class="col-sm-9">
+                        <InputSelect TValue="int" class="form-control" ValueExpression="() => DerivedModel.MeasureTypeFK" ValueChanged="(fk) => ManageChangeMeasure(fk, DerivedModel)">
+                            <option value="@(default(int))"></option>
+                            @foreach (var ft in measureTypes)
+                            {
+                                <option value="@ft.Id">@ft.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="() => DerivedModel.MeasureTypeFK" />
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-3 col-form-label">Cantidad</div>
+                    <div class="col-sm-9">
+                        <InputNumber class="form-control" @bind-Value="DerivedModel.Value" />
+                        <ValidationMessage For="() => DerivedModel.Value" />
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-3 col-form-label">Formato</div>
+                    <div class="col-sm-9">@DerivedModel.ToString()</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Se va a guardar el siguiente formato: "@Model.ToString()"
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    <button type="reset" class="btn btn-outline-danger" @onclick="() => OnEditionFinished.InvokeAsync(null)">Descartar</button>
+</EditForm>
+
+@code {
+    [Inject] public IRepoClient Repo { get; set; }
+    [Inject] public NotificationService Popup { get; set; }
+
+    [Parameter] public Format Model { get; set; }
+    [Parameter] public EventCallback<ProductCategory> OnEditionFinished { get; set; }
+
+    private Format DerivedModel = new Format();
+    private IEnumerable<FormatType> formatTypes { get; set; } = Enumerable.Empty<FormatType>();
+    private IEnumerable<MeasureType> measureTypes { get; set; } = Enumerable.Empty<MeasureType>();
+    private bool active { get; set; }
+    private EditContext editContext;
+    private ValidationMessageStore validationMessages { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (Model is null)
+            Model = new();
+
+        editContext = new EditContext(Model);
+        validationMessages = new ValidationMessageStore(editContext);
+        return base.OnParametersSetAsync();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Reload();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    void Validate()
+    {
+        validationMessages.Clear();
+        //if (string.IsNullOrWhiteSpace(Model.Name))
+        //    validationMessages.Add(() => Model.Name, "El nombre no debe quedar vacío");
+        //var formReady = editContext.Validate();
+        //if (formReady)
+        //    OnEditionFinished.InvokeAsync(Model);
+    }
+
+    private async Task Reload()
+    {
+        var result1 = await Repo.GetAsync<IEnumerable<FormatType>>(EndpointProduct.FORMAT_TYPE);
+        if (result1.Success)
+            formatTypes = result1.Response;
+        else
+            await Popup.ShowError($"No se pudo recuperar información: {await result1.ReadAsStringAsync()}");
+            var result2 = await Repo.GetAsync<IEnumerable<MeasureType>>(EndpointProduct.MEASURE_TYPE);
+        if (result2.Success)
+            measureTypes = result2.Response;
+        else
+            await Popup.ShowError($"No se pudo recuperar información: {await result2.ReadAsStringAsync()}");
+        StateHasChanged();
+
+    }
+
+    private void ManageChangeFormatType(Guid formatTypeId, Format model)
+    {
+        model.FormatTypeFK = formatTypeId;
+        model.FormatType = formatTypes.Single(f => f.Id == formatTypeId);
+    }
+    private void ManageChangeMeasure(int measureTypeId, Format model)
+    {
+        model.MeasureTypeFK = measureTypeId;
+        model.MeasureType = measureTypes.Single(f => f.Id == measureTypeId);
+    }
+}

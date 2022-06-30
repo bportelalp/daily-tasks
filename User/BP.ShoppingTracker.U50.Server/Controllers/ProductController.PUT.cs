@@ -64,5 +64,19 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
                 return this.ManageException(ex);
             }
         }
+
+        [HttpPut("format-type")]
+        public async Task<IActionResult> PutFormatType([FromBody] BP.ShoppingTracker.D10.Models.Products.FormatType formatType)
+        {
+            try
+            {
+                await dataService.UpdateAsync(formatType);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return this.ManageException(ex);
+            }
+        }
     }
 }

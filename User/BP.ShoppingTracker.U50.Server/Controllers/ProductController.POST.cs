@@ -48,6 +48,20 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
             }
         }
 
+        [HttpPost("format-type")]
+        public async Task<IActionResult> PostFormatType([FromBody] BP.ShoppingTracker.D10.Models.Products.FormatType formatType)
+        {
+            try
+            {
+                await dataService.CreateAsync(formatType);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return this.ManageException(ex);
+            }
+        }
+
         [HttpPost("format")]
         public async Task<IActionResult> PostFormat([FromBody] Format format, [FromQuery] bool updateMain = true, [FromQuery] bool updateDerived = false)
         {

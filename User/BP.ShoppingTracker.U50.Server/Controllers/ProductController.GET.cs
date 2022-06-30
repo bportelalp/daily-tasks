@@ -105,12 +105,12 @@ namespace BP.ShoppingTracker.U50.Server.Controllers
         }
 
         [HttpGet("format-type")]
-        public async Task<IActionResult> GetFormatType([FromQuery] string SearchName = "")
+        public async Task<IActionResult> GetFormatType([FromQuery] string? SearchName = "")
         {
             try
             {
                 var response = await dataService.ReadFormatTypes(SearchName);
-                if (response is null || !response.Any())
+                if (response is null)
                     return NotFound();
                 else
                     return Ok(response);

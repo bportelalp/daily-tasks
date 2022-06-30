@@ -11,8 +11,7 @@
       "Infrastructure\\BP.ShoppingTracker.I31.DataService\\BP.ShoppingTracker.I31.DataService.csproj",
       "User\\BP.ShoppingTracker.IoC.Server\\BP.ShoppingTracker.IoC.Server.csproj",
       "User\\BP.ShoppingTracker.U50.Client\\BP.ShoppingTracker.U50.Client.csproj",
-      "User\\BP.ShoppingTracker.U50.Server\\BP.ShoppingTracker.U50.Server.csproj",
-      "User\\BP.ShoppingTracker.U50.Shared\\BP.ShoppingTracker.U50.Shared.csproj"
+      "User\\BP.ShoppingTracker.U50.Server\\BP.ShoppingTracker.U50.Server.csproj"
     ]
   }
 }

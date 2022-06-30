@@ -18,7 +18,6 @@
     <ProjectReference Include="..\..\Components\Components\BP.Components.RepositoryClient\BP.Components.RepositoryClient.csproj" />
     <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.D10.Models\BP.ShoppingTracker.D10.Models.csproj" />
     <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.D20.Models\BP.ShoppingTracker.D20.Models.csproj" />
-    <ProjectReference Include="..\BP.ShoppingTracker.U50.Shared\BP.ShoppingTracker.U50.Shared.csproj" />
   </ItemGroup>
 
 </Project>

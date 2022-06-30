@@ -1,0 +1,100 @@
+﻿@if (formats is not null)
+{
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-outline-primary" @onclick="() => Edition = new()">Crear nuevo</button>
+        </div>
+    </div>
+   <Table TRow="Format" Items="formats">
+        <TableColumn TRow="Format" Field="c => c.ToString()" Title="Nombre" SortFirst="true" />
+        <TableColumn TRow="Format" Field="c => c.IsDerived" Title="Tipo derivado" />
+@*        <TableColumn TRow="Format" Context="Row" Title="Activo">
+            @if (Row.IsActive)
+            {
+                <span class="oi oi-check"></span>
+            }
+            else
+            {
+                <span class="oi oi-x"></span>
+            }
+        </TableColumn>*@
+        <TableColumn TRow="Format" Context="Row" Title="Acciones">
+            <button class="btn" @onclick="() => Edition = Row"><span class="oi oi-pencil"></span></button>
+        </TableColumn>
+    </Table>
+    @if (Edition is not null)
+    {
+        <FormatEditor Model="Edition"/>
+    }
+}
+else
+{
+    <Loader />
+}
+
+
+@code {
+    [Inject] IRepoClient Repo { get; set; }
+    [Inject] BP.Components.Blazor.UI.FrontendUtils.NotificationService Popup { get; set; }
+
+    private List<Format> formats { get; set; }
+    private Format Edition { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Reload();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task Reload()
+    {
+        var result = await Repo.GetAsync<IEnumerable<Format>>(EndpointProduct.FORMAT);
+        if (result.Success)
+            formats = result.Response.ToList();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async void HandleEditionFinished(Format productCategory)
+    {
+        if (productCategory is null)
+        {
+            Edition = null;
+            return;
+        }
+        var result = new RepoResponse<object>();
+        if (productCategory.Id == default(Guid))
+        {
+            productCategory.Id = Guid.NewGuid();
+            result = await Repo.PostAsync<Format>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
+        }
+        else
+            result = await Repo.PutAsync<Format>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
+        if (result.Success)
+        {
+            await Popup.ShowSucess("Actualizado correctamente");
+            Edition = null;
+            Reload();
+        }
+        else
+        {
+            await Popup.ShowError("No se pudo actualizar");
+        }
+    }
+
+    private async void HandleDelete(Format format)
+    {
+        var confirm = await Popup.ShowPrompt($"¿De verdad desea eliminar la categoría {format.ToString()}?", "Sí, eliminar.", "No");
+        if (confirm)
+        {
+            var result = await Repo.DeleteAsync<Format>(EndpointProduct.PRODUCT_CATEGORY, format);
+            if (result.Success)
+                await Popup.ShowSucess("Eliminado!");
+            else
+                await Popup.ShowError($"Ups! No se pudo eliminar: {await result.ReadAsStringAsync()}");
+        }
+        await Reload();
+    }
+}

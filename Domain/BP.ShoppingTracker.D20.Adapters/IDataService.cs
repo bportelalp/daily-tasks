@@ -49,6 +49,7 @@ namespace BP.ShoppingTracker.D20.Adapters
         #region UPDATE
         Task<ProductCategory> UpdateAsync(ProductCategory productCategory);
         Task<ProductType> UpdateAsync(ProductType productType);
+        Task<FormatType> UpdateAsync(FormatType formatType);
         Task<Company> UpdateAsync(Company company);
         Task<Brand> UpdateAsync(Brand brand);
         Task<IEnumerable<ProductType>> UpdateAsync(IEnumerable<ProductType> productType);

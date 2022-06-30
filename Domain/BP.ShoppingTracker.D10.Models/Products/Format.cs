@@ -16,6 +16,7 @@ namespace BP.ShoppingTracker.D10.Models.Products
         public FormatType FormatType { get; set; }
         public MeasureType MeasureType { get; set; }
         public Format DerivedFormat { get; set; }
+        public bool IsDerived => DerivedFormat is null;
 
         public override string ToString() =>
              ($"{FormatType?.ToString()} de {Value} {MeasureType?.ToString()}") + ((DerivedFormat != null ? $" de {DerivedFormat.ToString()}" : ""));
