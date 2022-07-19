@@ -8,7 +8,7 @@
                 <div class="mb-3 row">
                     <div class="col-sm-3 col-form-label">Existente</div>
                     <div class="col-sm-9">
-                        <InputSelect TValue="Guid" class="form-select" ValueExpression="() => Model.Id" >
+                        <InputSelect TValue="Guid" class="form-select" ValueExpression="() => Model.Id">
                             <option value="@(default(Guid))"></option>
                             @foreach (var ft in formats)
                             {
@@ -163,12 +163,16 @@
 
     private void ValidateModel(Format model)
     {
-        if (model.FormatTypeFK == default(Guid))
-            validationMessages.Add(() => model.FormatTypeFK, "Se debe seleccionar un formato");
-        if (model.MeasureTypeFK == 0)
-            validationMessages.Add(() => model.MeasureTypeFK, "Se debe seleccionar un tipo de medida");
-        if (model.Value == 0)
-            validationMessages.Add(() => model.MeasureTypeFK, "El valor no puede ser 0");
+        if (model.Id != default(Guid))
+        {
+            if (model.FormatTypeFK == default(Guid))
+                validationMessages.Add(() => model.FormatTypeFK, "Se debe seleccionar un formato");
+            if (model.MeasureTypeFK == 0)
+                validationMessages.Add(() => model.MeasureTypeFK, "Se debe seleccionar un tipo de medida");
+            if (model.Value == 0)
+                validationMessages.Add(() => model.MeasureTypeFK, "El valor no puede ser 0");
+
+        }
     }
     private async Task Reload()
     {
