@@ -1,0 +1,29 @@
+﻿@page "/"
+@using BP.ShoppingTracker.Models.Products
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<AuthorizeView Roles="admin">
+    <Authorized>
+        <text>Autorizado, @context.User.Identity.Name</text>
+    </Authorized>
+</AuthorizeView>
+
+
+<button class="btn btn-outline-primary" @onclick="Pedir">Pedir</button>
+
+@code {
+    [Inject] public IRepoClient Repo { get; set; }
+    [Inject] public NotificationService Popup { get; set; }
+
+    public async void Pedir()
+    {
+        await Popup.ShowPrompt("Confirmar");
+    }
+}

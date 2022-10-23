@@ -12,10 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\BP.ShoppingTracker.D20.Adapters\BP.ShoppingTracker.D20.Adapters.csproj" />
-    <ProjectReference Include="..\Infrastructure\BP.ShoppingTracker.I30.Persistence\BP.ShoppingTracker.I30.Persistence.csproj" />
-    <ProjectReference Include="..\Infrastructure\BP.ShoppingTracker.I31.DataService\BP.ShoppingTracker.I31.DataService.csproj" />
-    <ProjectReference Include="..\Infrastructure\BP.ShoppingTracker.I32.Generator\BP.ShoppingTracker.I32.Generator.csproj" />
+    <ProjectReference Include="..\Domain\BP.ShoppingTracker.Adaptables\BP.ShoppingTracker.Adaptables.csproj" />
+    <ProjectReference Include="..\Infrastructure\BP.ShoppingTracker.DataService\BP.ShoppingTracker.DataService.csproj" />
+    <ProjectReference Include="..\Infrastructure\BP.ShoppingTracker.Generator\BP.ShoppingTracker.Adapters.Generator.csproj" />
+    <ProjectReference Include="..\Infrastructure\BP.ShoppingTracker.Persistence\BP.ShoppingTracker.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

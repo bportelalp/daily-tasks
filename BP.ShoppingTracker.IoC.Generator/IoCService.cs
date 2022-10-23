@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BP.ShoppingTracker.Adaptables;
+using BP.ShoppingTracker.DataService;
+using BP.ShoppingTracker.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,9 +17,9 @@ namespace BP.ShoppingTracker.IoC.Generator
         public static void ConfigureIoC(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddDbContext<I30.Persistence.Context.ShoppingTrackerContext>(builder => UseDatabaseProvider(builder,configuration));
-            services.AddScoped<D20.Adapters.IDataService, I31.DataService.DataService>();
-            services.AddScoped<D20.Adapters.IGenerator, I32.Generator.Generator>();
+            services.AddDbContext<ShoppingTrackerContext>(builder => UseDatabaseProvider(builder,configuration));
+            services.AddScoped<IDataService, DataService.DataService>();
+            services.AddScoped<IGenerator, Adapters.Generator.Generator>();
         }
 
         public static void UseDatabaseProvider(DbContextOptionsBuilder builder, IConfiguration configuration)

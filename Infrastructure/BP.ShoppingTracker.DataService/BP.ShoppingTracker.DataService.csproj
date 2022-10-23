@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.Models\BP.ShoppingTracker.Models.csproj" />
+    <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.Adaptables\BP.ShoppingTracker.Adaptables.csproj" />
+    <ProjectReference Include="..\BP.ShoppingTracker.Persistence\BP.ShoppingTracker.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

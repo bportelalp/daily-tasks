@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using BP.ShoppingTracker.Persistence.Context;
+using BP.ShoppingTracker.Adaptables;
 
 namespace BP.ShoppingTracker.IoC.Server
 {
@@ -18,9 +20,9 @@ namespace BP.ShoppingTracker.IoC.Server
         public static void ConfigureIoC(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddDbContext<I30.Persistence.Context.ShoppingTrackerContext>(builder => UseDatabaseProvider(builder, configuration));
+            services.AddDbContext<ShoppingTrackerContext>(builder => UseDatabaseProvider(builder, configuration));
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<I30.Persistence.Context.ShoppingTrackerContext>()
+                .AddEntityFrameworkStores<ShoppingTrackerContext>()
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -33,7 +35,7 @@ namespace BP.ShoppingTracker.IoC.Server
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:key"])),
                     ClockSkew = TimeSpan.Zero
                 });
-            services.AddScoped<D20.Adapters.IDataService, I31.DataService.DataService>();
+            services.AddScoped<IDataService, DataService.DataService>();
         }
 
         public static void UseDatabaseProvider(DbContextOptionsBuilder builder, IConfiguration configuration)
