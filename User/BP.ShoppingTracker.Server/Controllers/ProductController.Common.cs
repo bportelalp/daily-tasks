@@ -4,7 +4,7 @@ namespace BP.ShoppingTracker.Server.Controllers
 {
     public partial class ProductController : ControllerBase
     {
-        public IActionResult ManageException(Exception ex)
+        private IActionResult ManageException(Exception ex)
         {
             Type exceptionType = ex.GetType();
             if (exceptionType == typeof(Microsoft.EntityFrameworkCore.DbUpdateException))

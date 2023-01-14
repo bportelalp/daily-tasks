@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using BP.ShoppingTracker.Adaptables;
 using BP.ShoppingTracker.Adapters.Catalogue.DataService;
 using BP.ShoppingTracker.Adapters.Catalogue.ORM.Context;
+using BP.ShoppingTracker.Adapters.Identity.ORM.Context;
 
 namespace BP.ShoppingTracker.IoC.Server
 {
@@ -21,9 +22,10 @@ namespace BP.ShoppingTracker.IoC.Server
         {
 
             services.AddDbContext<ShoppingTrackerContext>(builder => UseDatabaseProvider(builder, configuration));
-            //services.AddIdentity<IdentityUser, IdentityRole>()
-            //    //.AddEntityFrameworkStores<ShoppingTrackerContext>()
-            //    .AddDefaultTokenProviders();
+            services.AddDbContext<ShoppingTrackerIdentityContext>(builder => UseDatabaseProvider(builder,configuration));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ShoppingTrackerIdentityContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()

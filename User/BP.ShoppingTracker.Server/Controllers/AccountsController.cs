@@ -1,6 +1,7 @@
 ﻿using BP.ShoppingTracker.Models.Accounts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,12 +16,14 @@ namespace BP.ShoppingTracker.Server.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly IConfiguration configuration;
+        private readonly ILogger<AccountsController> logger;
 
-        public AccountsController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration)
+        public AccountsController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, ILogger<AccountsController> logger)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.configuration = configuration;
+            this.logger = logger;
         }
         [HttpPost("create-user")]
         public async Task<IActionResult> CreateUser([FromBody] UserInfoDTO userInfo)
@@ -34,12 +37,21 @@ namespace BP.ShoppingTracker.Server.Controllers
                 };
                 var result = await userManager.CreateAsync(user, userInfo.Password);
                 if (result.Succeeded)
-                    return Ok(BuildToken(userInfo));
+                {
+                    logger.LogTrace("User created;User={userName}", user.UserName);
+                    var token = BuildToken(userInfo);
+                    return Ok(token);
+                }
                 else
-                    return BadRequest("usuario o contraseña inválido");
+                {
+                    string textErrors = string.Join("|", result.Errors.Select(e => e.Code));
+                    logger.LogWarning("User cannot be created;User={};Reason={}", user.UserName, textErrors);
+                    return BadRequest($"usuario o contraseña inválido: {textErrors}");
+                }
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception CreateUser");
                 throw;
             }
         }
@@ -51,13 +63,20 @@ namespace BP.ShoppingTracker.Server.Controllers
             {
                 var result = await signInManager.PasswordSignInAsync(userInfo.Username, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
                 if (result.Succeeded)
+                {
+                    logger.LogTrace("User {userName} request login", userInfo.Username);
+                    var token = BuildToken(userInfo);
                     return Ok(BuildToken(userInfo));
+                }
                 else
+                {
+                    logger.LogWarning("User {userName} can't login", userInfo.Username);
                     return BadRequest("no logeado");
+                }
             }
             catch (Exception ex)
             {
-
+                logger.LogError(ex, "Exception Login");
                 throw;
             }
         }

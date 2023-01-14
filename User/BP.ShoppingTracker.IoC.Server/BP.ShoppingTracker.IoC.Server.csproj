@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Domain\BP.ShoppingTracker.Adaptables\BP.ShoppingTracker.Adaptables.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\BP.ShoppingTracker.Adapters.Identity\BP.ShoppingTracker.Adapters.Identity.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\BP.ShoppingTracker.Catalog.DataService\BP.ShoppingTracker.Adapters.Catalogue.csproj" />
 	</ItemGroup>
 
