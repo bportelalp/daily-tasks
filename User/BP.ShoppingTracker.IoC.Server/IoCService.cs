@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using BP.ShoppingTracker.Persistence.Context;
 using BP.ShoppingTracker.Adaptables;
+using BP.ShoppingTracker.Adapters.Catalogue.DataService;
+using BP.ShoppingTracker.Adapters.Catalogue.ORM.Context;
 
 namespace BP.ShoppingTracker.IoC.Server
 {
@@ -21,9 +21,9 @@ namespace BP.ShoppingTracker.IoC.Server
         {
 
             services.AddDbContext<ShoppingTrackerContext>(builder => UseDatabaseProvider(builder, configuration));
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<ShoppingTrackerContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<IdentityUser, IdentityRole>()
+            //    //.AddEntityFrameworkStores<ShoppingTrackerContext>()
+            //    .AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
@@ -35,7 +35,7 @@ namespace BP.ShoppingTracker.IoC.Server
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:key"])),
                     ClockSkew = TimeSpan.Zero
                 });
-            services.AddScoped<IDataService, DataService.DataService>();
+            services.AddScoped<ICatalogueService, CatalogueDataService>();
         }
 
         public static void UseDatabaseProvider(DbContextOptionsBuilder builder, IConfiguration configuration)

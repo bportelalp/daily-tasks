@@ -11,9 +11,9 @@ namespace BP.ShoppingTracker.Server.Controllers
     [Route("api/[controller]")]
     public partial class ProductController : ControllerBase
     {
-        private readonly IDataService dataService;
+        private readonly ICatalogueService dataService;
 
-        public ProductController(IDataService dataService)
+        public ProductController(ICatalogueService dataService)
         {
             this.dataService = dataService;
         }
