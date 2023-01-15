@@ -51,7 +51,7 @@ else
 
     private async Task Reload()
     {
-        var result = await Repo.GetAsync<IEnumerable<Format>>(EndpointProduct.FORMAT);
+        var result = await Repo.GetAsync<IEnumerable<Format>>(EndpointProduct.Format);
         if (result.Success)
             formats = result.Response.ToList();
         await InvokeAsync(StateHasChanged);
@@ -69,7 +69,7 @@ else
             format.Id = Guid.NewGuid();
         if (format.DerivedFormat is not null && format.DerivedFormat.Id == default(Guid))
             format.DerivedFormat.Id = Guid.NewGuid();
-        var query = Repo.BuildQuery(EndpointProduct.FORMAT, "updateMain", true, "updateDerived", true);
+        var query = Repo.BuildQuery(EndpointProduct.Format, "updateMain", true, "updateDerived", true);
         result = await Repo.PostAsync<Format>(query, format);
         if (result.Success)
         {
@@ -88,7 +88,7 @@ else
         var confirm = await Popup.ShowPrompt($"¿De verdad desea eliminar la categoría {format.ToString()}?", "Sí, eliminar.", "No");
         if (confirm)
         {
-            var result = await Repo.DeleteAsync<Format>(EndpointProduct.PRODUCT_CATEGORY, format);
+            var result = await Repo.DeleteAsync<Format>(EndpointProduct.ProductCategory, format);
             if (result.Success)
                 await Popup.ShowSucess("Eliminado!");
             else

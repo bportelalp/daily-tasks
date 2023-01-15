@@ -1,22 +1,25 @@
 ﻿namespace BP.ShoppingTracker.Client.Repository
 {
-    public struct EndpointProduct
+    public static class EndpointProduct
     {
-        public static readonly string ENDPOINT_PRODUCT = "api/product";
-        public static readonly string PRODUCT_CATEGORY = ENDPOINT_PRODUCT + "/product-category";
-        public static readonly string PRODUCT_TYPE = ENDPOINT_PRODUCT + "/product-type";
-        public static readonly string MEASURE_TYPE = ENDPOINT_PRODUCT + "/measure-type";
-        public static readonly string FORMAT_TYPE = ENDPOINT_PRODUCT + "/format-type";
-        public static readonly string FORMAT = ENDPOINT_PRODUCT + "/format";
-        public static readonly string COMPANY = ENDPOINT_PRODUCT + "/company";
-        public static readonly string BRAND = ENDPOINT_PRODUCT + "/brand";
+        public const string ProductController = "api/product";
+        public const string ProductCategory = ProductController + "/product-category";
+        public const string ProductType = ProductController + "/product-type";
+        public const string MeasureType = ProductController + "/measure-type";
+        public const string FormatType = ProductController + "/format-type";
+        public const string Format = ProductController + "/format";
+        public const string Company = ProductController + "/company";
+        public const string Brand = ProductController + "/brand";
     }
 
-    public struct EndpointAccounts
+    public static class EndpointAccounts
     {
-        public static readonly string ENDPOINT_ACCOUNTS = "api/accounts";
-        public static readonly string CREATE_USER = ENDPOINT_ACCOUNTS + "/create-user";
-        public static readonly string LOGIN = ENDPOINT_ACCOUNTS + "/login";
-
+        public const string AccountController = "api/accounts";
+        public const string Users = AccountController + "/users";
+        public const string Roles = AccountController + "/roles";
+        public const string SetUserRole = AccountController + "/set-user-role";
+        public const string RemoveUserRole = AccountController + "/remove-user-role";
+        public const string CreateUser = AccountController + "/create-user";
+        public const string Login = AccountController + "/login";
     }
 }

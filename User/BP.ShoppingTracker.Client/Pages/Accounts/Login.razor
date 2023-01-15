@@ -30,7 +30,7 @@
 
     private async Task LoginUser()
     {
-        var response = await repo.PostAsync<UserLoginDTO, UserTokenDTO>(EndpointAccounts.LOGIN, userInfo);
+        var response = await repo.PostAsync<UserLoginDTO, UserTokenDTO>(EndpointAccounts.Login, userInfo);
         if (!response.Success)
             await popUp.ShowError(await response.ReadAsStringAsync());
         else

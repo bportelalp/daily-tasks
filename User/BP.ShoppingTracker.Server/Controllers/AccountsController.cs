@@ -38,6 +38,7 @@ namespace BP.ShoppingTracker.Server.Controllers
         }
 
         [HttpGet("roles")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetRoles()
         {
             try
@@ -68,28 +69,52 @@ namespace BP.ShoppingTracker.Server.Controllers
             try
             {
                 var total = userManager.Users.Count();
-                var usersQuery = userManager.Users;
+                var usersQuery = userManager.Users.OrderBy(u => u.UserName).AsQueryable();
                 if (start is not null)
                     usersQuery = usersQuery.Skip(start.Value);
                 usersQuery = usersQuery.Take(amount);
+
 
                 var result = await usersQuery.ToListAsync();
                 IEnumerable<User> users = result.Select(r => new User()
                 {
                     Id = new Guid(r.Id),
-                    Username = r.UserName,
-                    Email = r.Email,
-                    PhoneNumber = r.PhoneNumber
+                    Username = r.UserName?? string.Empty,
+                    Email = r.Email ?? string.Empty,
+                    PhoneNumber = r.PhoneNumber,
+                    Roles = userManager.GetRolesAsync(r).Result
                 });
+                logger.LogTrace("Requested list of users");
                 return Ok(users);
             }
             catch (Exception ex)
             {
-
+                logger.LogError(ex, "Get users failed");
                 throw;
             }
         }
 
+        [HttpGet("my-account")]
+        [Authorize]
+        public async Task<IActionResult> GetUserDetails()
+        {
+            try
+            {
+                Claim? uniqueNameClaim = User.FindFirst(ClaimTypes.Name);
+                if(uniqueNameClaim is null)
+                    return NotFound();
+
+                string userName = uniqueNameClaim.Value;
+
+                return Ok(userName);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return Ok();
+        }
 
         [HttpPost("create-user")]
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDTO userInfo)
@@ -131,7 +156,7 @@ namespace BP.ShoppingTracker.Server.Controllers
                 var result = await signInManager.PasswordSignInAsync(userLogin.Username, userLogin.Password, isPersistent: false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var user = await userManager.FindByNameAsync(userLogin.Username);
+                    var user = await userManager.FindByNameAsync(userLogin.Username)?? throw new NullReferenceException();
                     var roles = await userManager.GetRolesAsync(user);
                     logger.LogTrace("User {userName} request login", userLogin.Username);
                     var token = BuildToken(userLogin, roles);
@@ -151,6 +176,7 @@ namespace BP.ShoppingTracker.Server.Controllers
         }
 
         [HttpPost("role")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PostCreateRole([FromBody] RoleDTO roleDto)
         {
             try
@@ -176,7 +202,8 @@ namespace BP.ShoppingTracker.Server.Controllers
             }
         }
 
-        [HttpPost("set-role")]
+        [HttpPost("set-user-role")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PostSetRoleUser([FromBody] EditRoleDTO editRole)
         {
             try
@@ -198,7 +225,8 @@ namespace BP.ShoppingTracker.Server.Controllers
             }
         }
 
-        [HttpPost("remove-role")]
+        [HttpPost("remove-user-role")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PostRemoveRoleUser([FromBody] EditRoleDTO editRole)
         {
             try

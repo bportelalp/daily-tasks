@@ -15,6 +15,6 @@ namespace BP.ShoppingTracker.Models.Accounts.Users
         public string Email { get; set; } = null!;
 
         [Phone]
-        public string PhoneNumber { get; set; } = null!;
+        public string? PhoneNumber { get; set; }
     }
 }

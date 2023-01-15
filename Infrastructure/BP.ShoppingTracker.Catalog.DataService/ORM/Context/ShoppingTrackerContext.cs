@@ -52,7 +52,7 @@ namespace BP.ShoppingTracker.Adapters.Catalogue.ORM.Context
             modelBuilder.Entity<CombinedFormat>(entity =>
             {
 
-                entity.HasComment("Permite la posibilidad de que un producto tenga formato derivado: (pack de 6 latas de 300g) => (pack de 6) -> (latas de 300g)");
+                entity.ToTable(t => t.HasComment("Permite la posibilidad de que un producto tenga formato derivado: (pack de 6 latas de 300g) => (pack de 6) -> (latas de 300g)"));
 
                 entity.HasKey(e => new { e.MainFormatFK, e.DerivedFormatFK });
 
@@ -161,7 +161,7 @@ namespace BP.ShoppingTracker.Adapters.Catalogue.ORM.Context
 
             modelBuilder.Entity<ProductCategory>(entity =>
             {
-                entity.HasComment("Categoría del tipo de producto: Alimentación, perfumería etc");
+                entity.ToTable(t => t.HasComment("Categoría del tipo de producto: Alimentación, perfumería etc"));
 
                 entity.Property(e => e.ID).ValueGeneratedNever();
 

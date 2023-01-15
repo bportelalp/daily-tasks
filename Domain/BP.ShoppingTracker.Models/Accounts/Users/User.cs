@@ -12,9 +12,11 @@ namespace BP.ShoppingTracker.Models.Accounts.Users
         public Guid Id { get; set; }
 
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
 
         [Phone]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
+
+        public IEnumerable<string> Roles { get; set; } = Enumerable.Empty<string>();
     }
 }

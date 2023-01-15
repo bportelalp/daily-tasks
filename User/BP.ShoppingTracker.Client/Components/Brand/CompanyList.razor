@@ -47,14 +47,14 @@ else
     {
         if (firstRender)
         {
-            Reload();
+            await Reload();
         }
         await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task Reload()
     {
-        var query = Repo.BuildQuery(EndpointProduct.COMPANY, "includeBrands", true);
+        var query = Repo.BuildQuery(EndpointProduct.Company, "includeBrands", true);
         var result = await Repo.GetAsync<IEnumerable<Company>>(query);
         if (result.Success)
             companies = result.Response.ToList();
@@ -72,15 +72,15 @@ else
         if (company.Id == default(Guid))
         {
             company.Id = Guid.NewGuid();
-            result = await Repo.PostAsync<Company>(EndpointProduct.COMPANY, company);
+            result = await Repo.PostAsync<Company>(EndpointProduct.Company, company);
         }
         else
-            result = await Repo.PutAsync<Company>(EndpointProduct.COMPANY, company);
+            result = await Repo.PutAsync<Company>(EndpointProduct.Company, company);
         if (result.Success)
         {
             await Popup.ShowSucess("Actualizado correctamente");
             Edition = null;
-            Reload();
+            await Reload();
         }
         else
         {
@@ -99,15 +99,15 @@ else
         if (brand.Id == default(Guid))
         {
             brand.Id = Guid.NewGuid();
-            result = await Repo.PostAsync<Brand>(EndpointProduct.BRAND, brand);
+            result = await Repo.PostAsync<Brand>(EndpointProduct.Brand, brand);
         }
         else
-            result = await Repo.PutAsync<Brand>(EndpointProduct.BRAND, brand);
+            result = await Repo.PutAsync<Brand>(EndpointProduct.Brand, brand);
         if (result.Success)
         {
             await Popup.ShowSucess("Actualizado correctamente");
             Edition = null;
-            Reload();
+            await Reload();
         }
         else
         {
@@ -120,7 +120,7 @@ else
         var confirm = await Popup.ShowPrompt($"¿De verdad desea eliminar la categoría {company.Name}?", "Sí, eliminar.", "No");
         if (confirm)
         {
-            var result = await Repo.DeleteAsync<Company>(EndpointProduct.COMPANY, company);
+            var result = await Repo.DeleteAsync<Company>(EndpointProduct.Company, company);
             if (result.Success)
                 await Popup.ShowSucess("Eliminado!");
             else

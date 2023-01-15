@@ -13,9 +13,9 @@ namespace BP.ShoppingTracker.Models.Products
         public int MeasureTypeFK { get; set; }
         public int Value { get; set; }
         public bool? Active { get; set; }
-        public FormatType FormatType { get; set; }
-        public MeasureType MeasureType { get; set; }
-        public Format DerivedFormat { get; set; }
+        public FormatType FormatType { get; set; } = null!;
+        public MeasureType MeasureType { get; set; } = null!;
+        public Format DerivedFormat { get; set; } = null!;
         public bool IsDerived => DerivedFormat is not null;
 
         public override string ToString() =>

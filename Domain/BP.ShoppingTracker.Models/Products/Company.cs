@@ -8,6 +8,6 @@ namespace BP.ShoppingTracker.Models.Products
 {
     public class Company : Base.EntityBase
     {
-        public IEnumerable<Brand> Brands { get; set; }
+        public IEnumerable<Brand> Brands { get; set; } = null!;
     }
 }

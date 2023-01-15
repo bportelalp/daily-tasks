@@ -52,7 +52,7 @@ else
 
     private async Task Reload()
     {
-        var result = await Repo.GetAsync<IEnumerable<ProductCategory>>(EndpointProduct.PRODUCT_CATEGORY);
+        var result = await Repo.GetAsync<IEnumerable<ProductCategory>>(EndpointProduct.ProductCategory);
         if (result.Success)
             categories = result.Response.ToList();
         await InvokeAsync(StateHasChanged);
@@ -69,10 +69,10 @@ else
         if (productCategory.Id == default(Guid))
         {
             productCategory.Id = Guid.NewGuid();
-            result = await Repo.PostAsync<ProductCategory>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
+            result = await Repo.PostAsync<ProductCategory>(EndpointProduct.ProductCategory, productCategory);
         }
         else
-            result = await Repo.PutAsync<ProductCategory>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
+            result = await Repo.PutAsync<ProductCategory>(EndpointProduct.ProductCategory, productCategory);
         if (result.Success)
         {
             await Popup.ShowSucess("Actualizado correctamente");
@@ -90,7 +90,7 @@ else
         var confirm = await Popup.ShowPrompt($"¿De verdad desea eliminar la categoría {productCategory.Name}?", "Sí, eliminar.", "No");
         if (confirm)
         {
-            var result = await Repo.DeleteAsync<ProductCategory>(EndpointProduct.PRODUCT_CATEGORY, productCategory);
+            var result = await Repo.DeleteAsync<ProductCategory>(EndpointProduct.ProductCategory, productCategory);
             if (result.Success)
                 await Popup.ShowSucess("Eliminado!");
             else

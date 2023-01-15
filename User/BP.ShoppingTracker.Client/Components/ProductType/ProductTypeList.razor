@@ -75,7 +75,7 @@ else
 
     private async Task Reload()
     {
-        var query = Repo.BuildQuery(EndpointProduct.PRODUCT_TYPE, "returnHierarchy", "true");
+        var query = Repo.BuildQuery(EndpointProduct.ProductType, "returnHierarchy", "true");
         var response = await Repo.GetAsync<IEnumerable<ProductType>>(query);
         if (response.Success)
             productTypes = response.Response;
@@ -98,10 +98,10 @@ else
         if (productType.Id == default(Guid))
         {
             productType.Id = Guid.NewGuid();
-            result = await Repo.PostAsync<ProductType>(EndpointProduct.PRODUCT_TYPE, productType);
+            result = await Repo.PostAsync<ProductType>(EndpointProduct.ProductType, productType);
         }
         else
-            result = await Repo.PutAsync<ProductType>(EndpointProduct.PRODUCT_TYPE, productType);
+            result = await Repo.PutAsync<ProductType>(EndpointProduct.ProductType, productType);
         if (result.Success)
         {
             await Popup.ShowSucess("Actualizado correctamente");
@@ -119,7 +119,7 @@ else
         var confirm = await Popup.ShowPrompt($"¿De verdad desea eliminar la categoría {productType.Name}?", "Sí, eliminar.", "No");
         if (confirm)
         {
-            var result = await Repo.DeleteAsync<ProductType>(EndpointProduct.PRODUCT_TYPE, productType);
+            var result = await Repo.DeleteAsync<ProductType>(EndpointProduct.ProductType, productType);
             if (result.Success)
                 await Popup.ShowSucess("Eliminado!");
             else

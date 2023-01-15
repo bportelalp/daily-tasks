@@ -11,9 +11,9 @@ namespace BP.ShoppingTracker.Models.Products
         public Guid ProductCategoryFK { get; set; }
         public Guid? ParentFK { get; set; }
 
-        public ProductCategory ProductCategory { get; set; }
-        public ProductType Parent { get; set; }
-        public IEnumerable<ProductType> Children { get; set; }
+        public ProductCategory ProductCategory { get; set; } = null!;
+        public ProductType Parent { get; set; } = null!;
+        public IEnumerable<ProductType> Children { get; set; } = null!;
         public bool HasParent => Parent is null;
         public bool HasProductCategory => ProductCategory is null;
         public bool HasChildren => Children is null || Children.Any();

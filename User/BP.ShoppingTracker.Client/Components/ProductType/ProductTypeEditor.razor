@@ -98,10 +98,10 @@
 
     private async Task Reload()
     {
-        var first = await Repo.GetAsync<IEnumerable<ProductCategory>>(EndpointProduct.PRODUCT_CATEGORY);
+        var first = await Repo.GetAsync<IEnumerable<ProductCategory>>(EndpointProduct.ProductCategory);
         if (first.Success)
             categories = first.Response.ToList();
-        var query = Repo.BuildQuery(EndpointProduct.PRODUCT_TYPE, "onlyFirstLevel", true);
+        var query = Repo.BuildQuery(EndpointProduct.ProductType, "onlyFirstLevel", true);
         var second = await Repo.GetAsync<IEnumerable<ProductType>>(query);
         if (second.Success)
             productTypesParent = second.Response.ToList();

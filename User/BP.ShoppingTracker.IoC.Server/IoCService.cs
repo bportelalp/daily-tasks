@@ -30,21 +30,22 @@ namespace BP.ShoppingTracker.IoC.Server
                 .AddEntityFrameworkStores<ShoppingTrackerIdentityContext>()
                 .AddDefaultTokenProviders();
 
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    string token = configuration["jwt:key"] ?? throw new ApplicationException("Jwt cannot be null");
                     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                     {
                         ValidateIssuer = false,
                         ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:key"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(token)),
                         ClockSkew = TimeSpan.Zero
                     };
 
@@ -57,8 +58,8 @@ namespace BP.ShoppingTracker.IoC.Server
 
                             // Write to the response in any way you wish
                             context.Response.StatusCode = 401;
-                            context.Response.Headers.Append("my-custom-header", "custom-value");
-                            await context.Response.WriteAsync("You are not authorized! (or some other custom message)");
+                            //context.Response.Headers.Append("my-custom-header", "custom-value");
+                            await context.Response.WriteAsync("Not authorized");
                         }
                     };
                 });

@@ -25,12 +25,26 @@
                             <span class="oi oi-plus" aria-hidden="true"></span> Tendencia
                         </NavLink>
                     </li>
+                    <AuthorizeView Roles="admin">
+                        <Authorized>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="user-manager">
+                                    <span class="oi oi-plus" aria-hidden="true"></span> Administración de usuarios
+                                </NavLink>
+                            </li>
+                        </Authorized>
+                    </AuthorizeView>
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <AuthorizeView>
                         <Authorized>
-                            <li><span>Hola, @context.User.Identity.Name</span></li>
-                            <li><a href="Logout" class="nav-link btn btn-link">Cerrar sesión</a></li>
+
+                            <li class="nav-item">
+                                <span class="nav-link">Hola, @context.User.Identity.Name</span>
+                            </li>
+                            <li class="nav-item">
+                                <a href="Logout" class="nav-link btn btn-link">Cerrar sesión</a>
+                            </li>
                         </Authorized>
                         <NotAuthorized>
                             <li class="nav-item">

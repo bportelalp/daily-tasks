@@ -1,0 +1,65 @@
+﻿@page "/user-manager"
+@attribute [Authorize(Roles = "admin")]
+
+<h3>Administrador de usuarios</h3>
+
+<Table TRow="User" Items="Users">
+    <TableColumn TRow="User" Field="u => u.Username" Title="Usuario" />
+    <TableColumn TRow="User" Context="user" Title="Role">
+        @foreach (var role in Roles)
+        {
+            <span class="ms-1">
+                <input type="checkbox" checked="@user.Roles.Contains(role)" @onchange="(args) => CheckChanged(user, role, args)" />
+                <label>@role</label>
+            </span>
+        }
+    </TableColumn>
+</Table>
+
+@code {
+    [Inject] IRepoClient Repo { get; set; }
+
+    private IEnumerable<User> Users { get; set; } = Enumerable.Empty<User>();
+    private IEnumerable<string> Roles { get; set; } = Enumerable.Empty<string>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var requestRolesTask = Repo.GetAsync<IEnumerable<RoleDTO>>(EndpointAccounts.Roles);
+        var requestUsersTask = Repo.GetAsync<IEnumerable<User>>(EndpointAccounts.Users);
+        await Task.WhenAll(requestRolesTask, requestUsersTask);
+        var requestRoles = await requestRolesTask;
+        var requestUsers = await requestUsersTask;
+        if (requestRoles.Success)
+        {
+            Roles = requestRoles.Response.Select(r => r.Name);
+        }
+        if (requestUsers.Success)
+        {
+            Users = requestUsers.Response;
+        }
+
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task CheckChanged(User user, string role, ChangeEventArgs e)
+    {
+        bool activate = (bool)e.Value;
+        string endpoint = string.Empty;
+        if (activate)
+            endpoint = EndpointAccounts.SetUserRole;
+        else
+            endpoint = EndpointAccounts.RemoveUserRole;
+
+        EditRoleDTO edition = new EditRoleDTO()
+            {
+                UserName = user.Username,
+                Role = role
+            };
+
+        var response = await Repo.PostAsync(endpoint, edition);
+        if (response.Success)
+        {
+
+        }
+    }
+}

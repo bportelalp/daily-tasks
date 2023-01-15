@@ -10,7 +10,6 @@
     },
     "BP.ShoppingTracker.Server": {
       "commandName": "Project",
-      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

@@ -2,24 +2,37 @@
 <div class="d-flex justify-content-center">
     <EditForm class="col col-xl-6 col-md-6 col-sm-8" Model="userInfo" OnValidSubmit="CreateUser">
         <div class="form-group">
-            <label>Nombre de usuario</label>
-            <div>
-                <InputText class="form-control" @bind-Value="@userInfo.Username" />
-                <ValidationMessage For="() => userInfo.Username" />
+            <div class="mt-2">
+                <label>Nombre de usuario<b class="text-danger">*</b>:</label>
+                <div>
+                    <InputText class="form-control" @bind-Value="@userInfo.Username" />
+                    <ValidationMessage For="() => userInfo.Username" />
+                </div>
             </div>
-            <label>Email:</label>
-            <div>
-                <InputText class="form-control" @bind-Value="@userInfo.Email" />
-                <ValidationMessage For="() => userInfo.Email" />
+            <div class="mt-2">
+                <label>Email<b class="text-danger">*</b>:</label>
+                <div>
+                    <InputText class="form-control" @bind-Value="@userInfo.Email" />
+                    <ValidationMessage For="() => userInfo.Email" />
+                </div>
             </div>
-            <label>Contraseña:</label>
-            <div>
-                <InputText type="password" class="form-control" @bind-Value="@userInfo.Password" />
-                <ValidationMessage For="() => userInfo.Email" />
+            <div class="mt-2">
+                <label>Teléfono:</label>
+                <div>
+                    <InputText type="text" class="form-control" @bind-Value="@userInfo.PhoneNumber" />
+                    <ValidationMessage For="() => userInfo.PhoneNumber" />
+                </div>
+            </div>
+            <div class="mt-2">
+                <label>Contraseña<b class="text-danger">*</b>:</label>
+                <div>
+                    <InputText type="password" class="form-control" @bind-Value="@userInfo.Password" />
+                    <ValidationMessage For="() => userInfo.Password" />
+                </div>
             </div>
         </div>
-
-        <button class="btn btn-outline-primary" type="submit">Registrarse</button>
+        <DataAnnotationsValidator />
+        <button class="btn btn-outline-primary mt-2" type="submit">Registrarse</button>
     </EditForm>
 </div>
 
@@ -35,7 +48,7 @@
 
     private async Task CreateUser()
     {
-        var response = await repo.PostAsync<UserCreationDTO, UserTokenDTO>(EndpointAccounts.CREATE_USER, userInfo);
+        var response = await repo.PostAsync<UserCreationDTO, UserTokenDTO>(EndpointAccounts.CreateUser, userInfo);
         if (!response.Success)
             await popUp.ShowError(await response.ReadAsStringAsync());
         else

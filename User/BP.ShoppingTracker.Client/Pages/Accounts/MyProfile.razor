@@ -1,0 +1,11 @@
+﻿@page "/profile/{userName}"
+@attribute [Authorize(Policy = "PersonalData")]
+
+<AuthorizeView >
+
+</AuthorizeView>
+
+@code {
+
+    [Parameter] public string UserName { get; set; }
+}

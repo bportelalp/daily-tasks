@@ -176,17 +176,17 @@
     }
     private async Task Reload()
     {
-        var result1 = await Repo.GetAsync<IEnumerable<FormatType>>(EndpointProduct.FORMAT_TYPE);
+        var result1 = await Repo.GetAsync<IEnumerable<FormatType>>(EndpointProduct.FormatType);
         if (result1.Success)
             formatTypes = result1.Response;
         else
             await Popup.ShowError($"No se pudo recuperar información: {await result1.ReadAsStringAsync()}");
-        var result2 = await Repo.GetAsync<IEnumerable<MeasureType>>(EndpointProduct.MEASURE_TYPE);
+        var result2 = await Repo.GetAsync<IEnumerable<MeasureType>>(EndpointProduct.MeasureType);
         if (result2.Success)
             measureTypes = result2.Response;
         else
             await Popup.ShowError($"No se pudo recuperar información: {await result2.ReadAsStringAsync()}");
-        var result3 = await Repo.GetAsync<IEnumerable<Format>>(EndpointProduct.FORMAT);
+        var result3 = await Repo.GetAsync<IEnumerable<Format>>(EndpointProduct.Format);
         if (result3.Success)
             formats = result3.Response;
         else

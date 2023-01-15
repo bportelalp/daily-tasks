@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -16,8 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.Adaptables\BP.ShoppingTracker.Adaptables.csproj" />
     <ProjectReference Include="..\..\Domain\BP.ShoppingTracker.Models\BP.ShoppingTracker.Models.csproj" />
-    <ProjectReference Include="..\BP.ShoppingTracker.IoC.Server\BP.ShoppingTracker.IoC.Server.csproj" />
     <ProjectReference Include="..\BP.ShoppingTracker.Client\BP.ShoppingTracker.Client.csproj" />
+    <ProjectReference Include="..\BP.ShoppingTracker.IoC.Server\BP.ShoppingTracker.IoC.Server.csproj" />
   </ItemGroup>
 
 

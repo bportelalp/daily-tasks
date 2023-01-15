@@ -14,7 +14,7 @@ namespace BP.ShoppingTracker.Models.Products
         public Guid BrandFK { get; set; }
         public int? BarCode { get; set; }
 
-        public ProductType ProductType { get; set; }
+        public ProductType ProductType { get; set; } = null!;
 
         public override string ToString() => Name + " - " + Id;
 

@@ -9,6 +9,6 @@ namespace BP.ShoppingTracker.Models.Products
     public class Brand : Base.EntityBase
     {
         public Guid? CompanyFK { get; set; }
-        public Company Company { get; set; }
+        public Company Company { get; set; } = null!;
     }
 }

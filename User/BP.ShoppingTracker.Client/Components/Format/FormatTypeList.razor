@@ -52,7 +52,7 @@ else
 
     private async Task Reload()
     {
-        var result = await Repo.GetAsync<IEnumerable<FormatType>>(EndpointProduct.FORMAT_TYPE);
+        var result = await Repo.GetAsync<IEnumerable<FormatType>>(EndpointProduct.FormatType);
         if (result.Success)
             formatTypes = result.Response.ToList();
         else
@@ -71,10 +71,10 @@ else
         if (formatType.Id == default(Guid))
         {
             formatType.Id = Guid.NewGuid();
-            result = await Repo.PostAsync<FormatType>(EndpointProduct.FORMAT_TYPE, formatType);
+            result = await Repo.PostAsync<FormatType>(EndpointProduct.FormatType, formatType);
         }
         else
-            result = await Repo.PutAsync<FormatType>(EndpointProduct.FORMAT_TYPE, formatType);
+            result = await Repo.PutAsync<FormatType>(EndpointProduct.FormatType, formatType);
         if (result.Success)
         {
             await Popup.ShowSucess("Actualizado correctamente");
@@ -92,7 +92,7 @@ else
         var confirm = await Popup.ShowPrompt($"¿De verdad desea eliminar la categoría {formatType.Name}?", "Sí, eliminar.", "No");
         if (confirm)
         {
-            var result = await Repo.DeleteAsync<FormatType>(EndpointProduct.FORMAT_TYPE, formatType);
+            var result = await Repo.DeleteAsync<FormatType>(EndpointProduct.FormatType, formatType);
             if (result.Success)
                 await Popup.ShowSucess("Eliminado!");
             else

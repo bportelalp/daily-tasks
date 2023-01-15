@@ -33,9 +33,9 @@ namespace BP.ShoppingTracker.Adaptables
         Task<IEnumerable<ProductCategory>> ReadProductCategories();
         Task<ProductType> ReadProductType(Guid id, bool includeParent = false, bool includeChildren = false);
         Task<IEnumerable<ProductType>> ReadProductTypes(bool includeCategory = true);
-        Task<IEnumerable<ProductType>> ReadProductTypes(string searchName, bool includeCategory = true, bool returnHierarchy = false, bool onlyRootLevel = false);
+        Task<IEnumerable<ProductType>> ReadProductTypes(string? searchName, bool includeCategory = true, bool returnHierarchy = false, bool onlyRootLevel = false);
         Task<IEnumerable<MeasureType>> ReadMeasureTypes();
-        Task<IEnumerable<FormatType>> ReadFormatTypes(string SearchName = "");
+        Task<IEnumerable<FormatType>> ReadFormatTypes(string? SearchName = "");
         Task<Format> ReadFormat(Guid id, Guid id2 = default);
         Task<IEnumerable<Format>> ReadFormats();
         Task<Company> ReadCompany(Guid id);
