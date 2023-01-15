@@ -31,11 +31,11 @@
     [Inject] ILoginService loginService { get; set; }
     [Inject] BP.Components.Blazor.UI.FrontendUtils.NotificationService popUp { get; set; }
 
-    private UserInfoDTO userInfo { get; set; } = new UserInfoDTO();
+    private UserCreationDTO userInfo { get; set; } = new UserCreationDTO();
 
     private async Task CreateUser()
     {
-        var response = await repo.PostAsync<UserInfoDTO, UserTokenDTO>(EndpointAccounts.CREATE_USER, userInfo);
+        var response = await repo.PostAsync<UserCreationDTO, UserTokenDTO>(EndpointAccounts.CREATE_USER, userInfo);
         if (!response.Success)
             await popUp.ShowError(await response.ReadAsStringAsync());
         else

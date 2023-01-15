@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BP.ShoppingTracker.Models.Accounts
 {
-    public class UserTokenDTO
+    public class RoleDTO
     {
-        public string Token { get; set; }
-        public DateTime Expiration { get; set; }
+        public string Name { get; set; } = null!;
     }
 }

@@ -13,6 +13,7 @@ using BP.ShoppingTracker.Adaptables;
 using BP.ShoppingTracker.Adapters.Catalogue.DataService;
 using BP.ShoppingTracker.Adapters.Catalogue.ORM.Context;
 using BP.ShoppingTracker.Adapters.Identity.ORM.Context;
+using Microsoft.AspNetCore.Http;
 
 namespace BP.ShoppingTracker.IoC.Server
 {
@@ -22,20 +23,44 @@ namespace BP.ShoppingTracker.IoC.Server
         {
 
             services.AddDbContext<ShoppingTrackerContext>(builder => UseDatabaseProvider(builder, configuration));
-            services.AddDbContext<ShoppingTrackerIdentityContext>(builder => UseDatabaseProvider(builder,configuration));
+            services.AddDbContext<ShoppingTrackerIdentityContext>(builder => UseDatabaseProvider(builder, configuration));
             services.AddIdentity<IdentityUser, IdentityRole>()
+                //.AddRoles<IdentityRole>()
+                //.AddRoleManager<RoleManager<IdentityUser>>()
                 .AddEntityFrameworkStores<ShoppingTrackerIdentityContext>()
                 .AddDefaultTokenProviders();
 
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:key"])),
-                    ClockSkew = TimeSpan.Zero
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:key"])),
+                        ClockSkew = TimeSpan.Zero
+                    };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnChallenge = async context =>
+                        {
+                            // Call this to skip the default logic and avoid using the default response
+                            context.HandleResponse();
+
+                            // Write to the response in any way you wish
+                            context.Response.StatusCode = 401;
+                            context.Response.Headers.Append("my-custom-header", "custom-value");
+                            await context.Response.WriteAsync("You are not authorized! (or some other custom message)");
+                        }
+                    };
                 });
             services.AddScoped<ICatalogueService, CatalogueDataService>();
         }

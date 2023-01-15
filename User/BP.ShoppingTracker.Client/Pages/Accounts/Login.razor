@@ -10,7 +10,7 @@
             <label>Contraseña:</label>
             <div>
                 <InputText type="password" class="form-control" @bind-Value="@userInfo.Password" />
-                <ValidationMessage For="() => userInfo.Email" />
+                <ValidationMessage For="() => userInfo.Password" />
             </div>
         </div>
 
@@ -26,11 +26,11 @@
     [Inject] ILoginService loginService { get; set; }
     [Inject] BP.Components.Blazor.UI.FrontendUtils.NotificationService popUp { get; set; }
 
-    private UserInfoDTO userInfo { get; set; } = new UserInfoDTO();
+    private UserLoginDTO userInfo { get; set; } = new UserLoginDTO();
 
     private async Task LoginUser()
     {
-        var response = await repo.PostAsync<UserInfoDTO, UserTokenDTO>(EndpointAccounts.LOGIN, userInfo);
+        var response = await repo.PostAsync<UserLoginDTO, UserTokenDTO>(EndpointAccounts.LOGIN, userInfo);
         if (!response.Success)
             await popUp.ShowError(await response.ReadAsStringAsync());
         else

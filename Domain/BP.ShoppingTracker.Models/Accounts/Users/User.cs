@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BP.ShoppingTracker.Models.Accounts
+namespace BP.ShoppingTracker.Models.Accounts.Users
 {
-    public class UserInfoDTO
+    public class User : UserBase
     {
-        [Required]
-        public string Username { get; set; }
-        [Required]
+        public Guid Id { get; set; }
+
         [EmailAddress]
         public string Email { get; set; }
-        [Required]
-        public string Password { get; set; }
+
+        [Phone]
+        public string PhoneNumber { get; set; }
     }
 }
